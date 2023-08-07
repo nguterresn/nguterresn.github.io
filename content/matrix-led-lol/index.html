@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    
+      <meta name="description" content="A place where I write about what I'm doing during the weekend." />
+    
+    
+      <meta name="author" content="Nuno Nogueira" />
+    
+
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://guterresnogueira.com/content/matrix-led-lol/">
+    <meta property="twitter:title" content="Matrix Led telling how good you are at playing League of Legends">
+    <meta property="twitter:image" content="../../favicon/android-chrome-192x192.png">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+
+    <title>
+      Matrix Led telling how good you are at playing League of Legends - Nuno Nogueira
+    </title>
+
+    <!-- Bulma CSS framework -->
+    <!-- <link href="../../bulma.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="../../style.css" rel="stylesheet" />
+    <link href="../../code_theme.css" rel="stylesheet" />
+
+    <!-- Script to support LaTex -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+    <!-- Import custom script -->
+    <!-- Custom code, enable support for inline LaTex equations -->
+    <script type="text/javascript" src="../../script.js" defer></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G15FQ3N6VZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-G15FQ3N6VZ');
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="container is-max-desktop">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="../..">
+              Nuno Guterres Nogueira
+            </a>
+            <a
+              role="button"
+              class="navbar-burger"
+              aria-label="menu"
+              aria-expanded="false"
+              data-target="navbar_menu"
+            >
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <div class="navbar-menu" id="navbar_menu">
+            <div class="navbar-end">
+               
+              <a
+                class="navbar-item"
+                href="../.."
+              >
+                Home
+              </a>
+              
+              <a
+                class="navbar-item"
+                href="https://m.me/nunoguterresn"
+              >
+                Contact me
+              </a>
+               
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <article class="content"><h1 id="matrix-led-telling-how-good-you-are-at-playing-league-of-legends">Matrix Led telling how good you are at playing League of Legends</h1>
+<p>Recently I acquired one of the matrix led panels selling on <a href="https://pt.aliexpress.com/wholesale?catId=0&amp;initiative_id=AS_20210120102931&amp;SearchText=1088as">Aliexpress</a> or Ebay and started to print some stuff.</p>
+<p><img alt="Matrix%20Led%20telling%20how%20good%20you%20are%20at%20playing%20Lea%206b4fc4cb232c44a4b7b6c5dfc405bd36/1_LbhCD9qMvkglreRQqP0U3A.gif" src="../img/1_LbhCD9qMvkglreRQqP0U3A.gif" /></p>
+<p>Came to my mind that some people, including myself, need some kind of memo to remind how bad (or good huh) they are at League of Legends.</p>
+<p>The idea is simple, <strong>connect the matrix led to a microcontroller,</strong> then <strong>receive some data from a script running on the computer</strong> and <strong>connected to the League of Legends API</strong>.</p>
+<p><img alt="Matrix%20Led%20telling%20how%20good%20you%20are%20at%20playing%20Lea%206b4fc4cb232c44a4b7b6c5dfc405bd36/Untitled.png" src="../img/U0.png" /></p>
+<h1 id="arduino-side"><strong>Arduino Side</strong></h1>
+<p>From the Arduino side, it is possible to connect the matrix like this:</p>
+<p><img alt="Matrix%20Led%20telling%20how%20good%20you%20are%20at%20playing%20Lea%206b4fc4cb232c44a4b7b6c5dfc405bd36/Untitled%201.png" src="../img/U1.png" /></p>
+<p>After having the connections well established, it is time to code. The code used in this project is based on a library from this repository, named MD_Parola. Here is the code to use: <a href="https://github.com/MajicDesigns/MD_Parola/blob/main/examples/Parola_Scrolling/Parola_Scrolling.ino">MD_Parola/Parola_Scrolling.ino at main · MajicDesigns/MD_Parol</a>a (<a href="http://github.com/">github.com</a>).</p>
+<script src="https://gist.github.com/nguterresn/2a144160e0f683bc37b66ae85cdb3497.js"></script>
+
+<p>After running and testing, the matrix should print some like: “Hello! Enter new message?”.</p>
+<h1 id="pc-side"><strong>PC Side</strong></h1>
+<p>If it runs smoothly, then everything is ready. <strong>Connect the Arduino to the PC through USB cable.</strong></p>
+<p>You can <strong>open a serial session</strong> in TeraTerm (or similar software) and this text is what you got from the Arduino. Now, write something and press <em>enter</em>, the matrix will show whatever you write!</p>
+<p><img alt="Matrix%20Led%20telling%20how%20good%20you%20are%20at%20playing%20Lea%206b4fc4cb232c44a4b7b6c5dfc405bd36/Untitled%202.png" src="../img/U2.png" /></p>
+<p>If you can’t find which serial port is Arduino connected to, go to <em>Device Manager</em> and check <em>Ports</em>.</p>
+<p>OK, now you are good to code in python!</p>
+<h1 id="code-in-python"><strong>Code in Python</strong></h1>
+<p>If you can output whatever you write in the serial port, you can now deal with the python code which gives us the ability to know how much time was spent in the last game played, and if the game was won or lost (we know but the computer doesn't!).</p>
+<p>I’m not a python developer nor a expert in any way, but I think python is so straightforward that everyone is able to understand quickly!</p>
+<p>First, you need python installed, then you need to install the <em>riotwatcher</em>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">pip3</span> <span class="n">install</span> <span class="n">riotwatcher</span>
+</code></pre></div>
+<p>After installing riotwatcher, install <a href="https://pyserial.readthedocs.io/en/latest/pyserial.html">PySerial</a> in order to control serial port:</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">pyserial</span>
+</code></pre></div>
+<p>Having a successful installation is mandatory to execute the python code we are going to use. Run python in the terminal to check if it is installed. Then create a file and import <strong>riotwatcher</strong> and <strong>serial</strong> — this allows to check if the libraries are available to be used:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">riotwatcher</span> <span class="kn">import</span> <span class="n">LolWatcher</span><span class="p">,</span> <span class="n">ApiError</span>
+<span class="kn">import</span> <span class="nn">serial</span>
+</code></pre></div>
+<p>Then run:</p>
+<div class="highlight"><pre><span></span><code><span class="n">python</span> <span class="n">yourfile</span><span class="o">.</span><span class="n">py</span>
+</code></pre></div>
+<p>If this test is successful you are ready to make a small changes in the final code!</p>
+<script src="https://gist.github.com/nguterresn/5614d2391ceeae566932312d6c26660e.js"></script>
+
+<p>Change <strong>Serial port</strong> (serial_port), <strong>API key</strong> (api_key), <strong>region</strong> (my_region) and <strong>summoners name</strong> (my_summonername).</p>
+<p>The program will update every 30 seconds, and, although it can be changed, you can not change it much more, there are some limitations using <strong>Riot API — 100 requests every 2 min.</strong> So, using 4 requests every 2 minutes we make sure everything works fine.</p>
+<p>To change the text shown in the matrix led, change the data inside the <em>ser.write()</em> function, like:</p>
+<div class="highlight"><pre><span></span><code><span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="err">“</span><span class="n">Solobolo</span><span class="err">”</span><span class="p">)</span>
+<span class="c1"># Note that the desired type is bytes.</span>
+</code></pre></div>
+<p>If you are some expert in python you can add more exceptions to the code to make it more robust!</p>
+<p>Hope you have as much fun as I had during this micro-project!</p></article>
+        
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="nunoguterres" data-show-count="false">Tweet</a>
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        
+      </div>
+    </section>
+
+    <section class="hero is-link">
+      <div class="hero-body">
+        <p class="title">
+          Follow me around the internet ⤵
+        </p>
+        <p class="subtitle">
+          <div class="internet_links">
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/nunognogueira/"
+              >
+                <img
+                  src="../../icons/instagram.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://twitter.com/nunoguterres"
+              >
+                <img
+                  src="../../icons/twitter.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.linkedin.com/in/guterresnogueira/"
+              >
+                <img
+                  src="../../icons/linkedin.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/nguterresn"
+              >
+                <img
+                  src="../../icons/github.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+          </div>
+        </p>
+        <br>
+        <p class="subtitle">
+          <img src="../../icons/nuno.png" alt="" width="80" height="80">
+        </p>
+      </div>
+    </section>
+  </body>
+</html>

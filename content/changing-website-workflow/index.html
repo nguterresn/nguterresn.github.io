@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    
+      <meta name="description" content="A place where I write about what I'm doing during the weekend." />
+    
+    
+      <meta name="author" content="Nuno Nogueira" />
+    
+
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://guterresnogueira.com/content/changing-website-workflow/">
+    <meta property="twitter:title" content="Changing website workflow with Mkdocs">
+    <meta property="twitter:image" content="../../favicon/android-chrome-192x192.png">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+
+    <title>
+      Changing website workflow with Mkdocs - Nuno Nogueira
+    </title>
+
+    <!-- Bulma CSS framework -->
+    <!-- <link href="../../bulma.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="../../style.css" rel="stylesheet" />
+    <link href="../../code_theme.css" rel="stylesheet" />
+
+    <!-- Script to support LaTex -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+    <!-- Import custom script -->
+    <!-- Custom code, enable support for inline LaTex equations -->
+    <script type="text/javascript" src="../../script.js" defer></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G15FQ3N6VZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-G15FQ3N6VZ');
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="container is-max-desktop">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="../..">
+              Nuno Guterres Nogueira
+            </a>
+            <a
+              role="button"
+              class="navbar-burger"
+              aria-label="menu"
+              aria-expanded="false"
+              data-target="navbar_menu"
+            >
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <div class="navbar-menu" id="navbar_menu">
+            <div class="navbar-end">
+               
+              <a
+                class="navbar-item"
+                href="../.."
+              >
+                Home
+              </a>
+              
+              <a
+                class="navbar-item"
+                href="https://m.me/nunoguterresn"
+              >
+                Contact me
+              </a>
+               
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <article class="content"><h1 id="changing-website-workflow-with-mkdocs">Changing website workflow with Mkdocs</h1>
+<h2 id="how-i-was-doing-before">How I was doing before</h2>
+<p>First idea to come to my mind was to ease the process of building <em>code</em>. So <strong>I used Notion as a platform to write whatever I wanted, it helped me create tables, links, images...</strong> It is a very good tool! Then I would export to HTML and add to my website through a template. After that I only had to improve edges and it was good to go.</p>
+<p>I choose this way because it gave me more freedom - I could code whatever I wanted on top of the article. Code JS to do a crazy animation, I could create a button to guide you throughout a demo. At first, seems a pretty good idea, but, in the end, I was not using the freedom I once searched for.</p>
+<p>So, I still had to deal with <em>code</em> like HTML, which made the process a bit slow and would make friction to create <em>something</em>, whatever it could be.</p>
+<h2 id="solution">Solution?</h2>
+<p>After one year of using this process I came accross something named as <a href="https://www.mkdocs.org/">Mkdocs</a>. This got my attention right away! Even thought, I had to lost a bit of freedom along the code, it would make the process so much easier (and I could show you so by writing this while using Mkdocs). It basically <strong>let's you write on markdown and then converts everything into proper <em>code</em></strong>, like HTML, CSS, JS... Just one command and that's it! Easy right? Thought so 😎.</p>
+<h2 id="how-to-do-it">How to do it</h2>
+<p>So, if you interest how can you do this? Well, easy for you because<a href="https://www.mkdocs.org/getting-started/"> Mkdocs has a ton of great documentation</a>!</p>
+<p>My biggest challenge was to create a theme for this website using the mkdocs available tools to do so. I kept it simple, simple colors, default sizes for containers, an easy to read and open-source font (<a href="https://fonts.google.com/specimen/Nunito?preview.text_type=custom">Nunito</a>) and a more serious one (<a href="https://fonts.google.com/specimen/Merriweather">Merriweather</a>). I also used <a href="https://bulma.io/">Bulma CSS framework</a> to facilitate the process (I tend to use bootstrap but felt like giving a chance to Bulma)! If you don't want to create a theme I suggest to use the default ones or to search in the <a href="https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes">community wiki for other themes</a> (special mention to <a href="https://squidfunk.github.io/mkdocs-material/">Material</a>).</p>
+<p>I droped the left column with the button to download CV and with the QR Code to add me to your contacts. Reasons for this:</p>
+<ul>
+<li>QR code was useless if you were on mobile, which the world is tending to.</li>
+<li>CV is important but I am not trying to sell myself but to share what I like with the world.</li>
+</ul>
+<p>Also got rid of the Discus chat. No one was using it (uh) and it sells people data for profit - I don't like it.</p>
+<h2 id="future-and-archive">Future and archive</h2>
+<p>The old website still exists! <a href="https://archive.guterresnogueira.com">I just created a new endpoint for it</a>, some of the content is just impossible to replicate here, but almost 90% is now on markdown.
+From now on, the website is going to be in this design, which I hope is much comfortable than the other one.</p>
+<h6 id="27092021">27/09/2021</h6></article>
+        
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="nunoguterres" data-show-count="false">Tweet</a>
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        
+      </div>
+    </section>
+
+    <section class="hero is-link">
+      <div class="hero-body">
+        <p class="title">
+          Follow me around the internet ⤵
+        </p>
+        <p class="subtitle">
+          <div class="internet_links">
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/nunognogueira/"
+              >
+                <img
+                  src="../../icons/instagram.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://twitter.com/nunoguterres"
+              >
+                <img
+                  src="../../icons/twitter.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.linkedin.com/in/guterresnogueira/"
+              >
+                <img
+                  src="../../icons/linkedin.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/nguterresn"
+              >
+                <img
+                  src="../../icons/github.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+          </div>
+        </p>
+        <br>
+        <p class="subtitle">
+          <img src="../../icons/nuno.png" alt="" width="80" height="80">
+        </p>
+      </div>
+    </section>
+  </body>
+</html>

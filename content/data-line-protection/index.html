@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    
+      <meta name="description" content="A place where I write about what I'm doing during the weekend." />
+    
+    
+      <meta name="author" content="Nuno Nogueira" />
+    
+
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://guterresnogueira.com/content/data-line-protection/">
+    <meta property="twitter:title" content="Data Line Protection using Diodes - How to protect your Microcontroller I/O">
+    <meta property="twitter:image" content="../../favicon/android-chrome-192x192.png">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+
+    <title>
+      Data Line Protection using Diodes - How to protect your Microcontroller I/O - Nuno Nogueira
+    </title>
+
+    <!-- Bulma CSS framework -->
+    <!-- <link href="../../bulma.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="../../style.css" rel="stylesheet" />
+    <link href="../../code_theme.css" rel="stylesheet" />
+
+    <!-- Script to support LaTex -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+    <!-- Import custom script -->
+    <!-- Custom code, enable support for inline LaTex equations -->
+    <script type="text/javascript" src="../../script.js" defer></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G15FQ3N6VZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-G15FQ3N6VZ');
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="container is-max-desktop">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="../..">
+              Nuno Guterres Nogueira
+            </a>
+            <a
+              role="button"
+              class="navbar-burger"
+              aria-label="menu"
+              aria-expanded="false"
+              data-target="navbar_menu"
+            >
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <div class="navbar-menu" id="navbar_menu">
+            <div class="navbar-end">
+               
+              <a
+                class="navbar-item"
+                href="../.."
+              >
+                Home
+              </a>
+              
+              <a
+                class="navbar-item"
+                href="https://m.me/nunoguterresn"
+              >
+                Contact me
+              </a>
+               
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <article class="content"><h1 id="data-line-protection-using-diodes-how-to-protect-your-microcontroller-io">Data Line Protection using Diodes - How to protect your Microcontroller I/O</h1>
+<h3 id="diode-protection">Diode protection</h3>
+<p>A common way to protect a Input/Output Line is to have it in between two diodes.</p>
+<p><img alt="Diode Clamping" src="../img/article2012-protecting-inputs-in-digital-fig6.jpg" /></p>
+<p>The article from where I took the picture above, <a href="https://www.digikey.se/en/articles/protecting-inputs-in-digital-electronics">Protecting Inputs in Digital Electronics</a>, explains really well the problem - <strong>inductive ringing</strong> (or voltage oscillations) at the input of a data line <strong>can damage a component.</strong></p>
+<p>This way of protecting a data line is quite common in microcontroller or generic data line applications; there are even some chips that already have these two diodes ready to be used and plugged, like the <a href="https://assets.nexperia.com/documents/data-sheet/BAV23_SER.pdf">BAV23S</a>.</p>
+<h3 id="voltage-interval">Voltage Interval</h3>
+<p>The main goal of these two diodes is to create a <strong>voltage interval in which the current is allowed to pass through</strong> and prevent voltage oscillations. Mathematically speaking, something like:</p>
+<p>
+<script type="math/tex; mode=display">V_{GND} - V_{forward} < voltage < V_{ref} + V_{forward}</script>
+</p>
+<p>First, it all depends on the <strong>Diode Forward Voltage</strong> ($V_{forward}$) and from the <strong>Reference Voltage</strong> $V_{ref}$. The $V_{ref}$ depends on the type of the diode and on the specifications even between diodes from the same type. Since I already used (as an example) the chip <em>BAV23S</em>, let's check its datasheet.</p>
+<p><img alt="BAV23S Data sheet - 7. Characteristics" src="../img/BAV23SDatasheet.png" /></p>
+<p>As stated above, the <strong>Forward Voltage</strong> ($V_{forward}$) is around 1.25V for the <strong>Forward Current</strong> ($I_{forward}$) of 100mA. This can be translated into - when 100mA of current pass through the diode, the voltage drop (same as the forward voltage) across the diode terminals is around 1.25V.</p>
+<p>In a hypothetic scenario, where the Reference Voltage ($V_{ref}$) is 3.3V, what would be the voltage interval?</p>
+<p>Well, if we consider the diode forward voltage ($V_{ref}$) to be 1.25V, then the interval would look like this:</p>
+<p>
+<script type="math/tex; mode=display">0 - 1.25 < voltage < 3.3V + 1.25V</script>
+<script type="math/tex; mode=display">- 1.25V < voltage < 4.55V</script>
+</p>
+<p>This would mean that the circuit would be protected from temporary voltage spikes. The overvoltage would be absorbed by a load, in case the voltage exceeds the 4.55V.</p>
+<p>If the voltage at the input terminal is 3.3V, the voltage at the output terminal is also going to be 3.3V.</p>
+<p><img alt="Data Line Protection as it is." src="../img/DataLineProtection.png" /></p>
+<p>But what if the voltage goes above or under the voltage interval?</p>
+<p>In case we encounter a voltage spike, <strong>the current will flow through the top diode until the $V_{ref}$</strong>, where it is going to be absorbed, as stated previously.</p>
+<p><img alt="Overcharge Data Line Protection" src="../img/DataLineProtection2.png" /></p>
+<p>And, finally, if the voltage goes under the voltage interval, the current flows until the ground.</p>
+<p><img alt="Undervoltage Data Line Protection" src="../img/DataLineProtection3.png" /></p>
+<p>This use of the diodes is actually simple, cheap and great if used with an <strong>$V_{ref}$ capable to sink the current coming from the overvoltage</strong>. In some cases, the lack of a proper load at the reference voltage, might lead to an unregulated power line. Thus, is important to limit the current going through the diodes, by increasing the resistance before them. In fact, if the line is being shared with a microcontroller, it shouldn't even go above the 10mA in most of the cases.</p>
+<h3 id="how-to-decrease-the-voltage-interval">How to decrease the voltage interval</h3>
+<p>The Voltage Interval can also be easily modified by choosing another <strong>Forward Voltage</strong> ($V_{forward}$). To decrease the interval, the ideal choice is to go with <strong>Schottky  Diodes</strong>, since their $V_{forward}$ is around 0.3V:</p>
+<p>
+<script type="math/tex; mode=display">0 - 0.3 < voltage < 3.3V + 0.3V</script>
+<script type="math/tex; mode=display">- 0.3 < voltage < 3.6V</script>
+</p>
+<p><strong>Final note:</strong> It is just not me supporting this <em>protection</em>, a <a href="https://electronics.stackexchange.com/a/25692">couple of companies/manufacturers also do and recommend</a>.</p>
+<h2 id="zener-diode">Zener Diode</h2>
+<p>This is also a type of diode, but has a much lower reverse voltage threshold - the inverted voltage at the terminals of the diode working in reverse bias, that allows the flow of the current.</p>
+<p>The Zener Diode can be used as an alternative to the clipping diode connected to the <strong>Reference Voltage</strong> $V_{ref}$. This way, we can avoid forwarding current to a power line (and bonus - also eases PCB routing, since it is connected to the ground).</p>
+<p><img alt="Zener Circuit" src="../img/Zener.png" /></p>
+<p>But, before we jump into the circuit, an important thing to have in mind when dealing with Zener Diodes is that if a <em>lot</em> of current goes through the diode, its voltage regulation fails (and it fries 😅). Let's take a simple example:</p>
+<p><img alt="Zener Diode Not Regulated" src="../img/ltspice_diode_zener1.png" /></p>
+<p>The <strong>Input Voltage</strong> ($V_{i}$) is 15V and the Breakout Voltage ($V_{bo}$) of the Zener Diode is 4.7V, which means the voltage across the terminals of the diode should be 4.7V. Let's take a look into the simulation:</p>
+<p><img alt="Zener Diode Simulation" src="../img/ltspice_sim_zener1.png" /></p>
+<p>It is not the expected result. Because the resistance is so small ($5\Omega$), the current passing through the diode turns it into an unstable component.</p>
+<p>
+<script type="math/tex; mode=display"> I = \frac{V_{i} - V_{bo}}{5\Omega} A</script>
+<script type="math/tex; mode=display"> I = \frac{15V - 4.7V}{5\Omega} A</script>
+<script type="math/tex; mode=display"> I = 2,06 A</script>
+</p>
+<p>The theoretical current 2,06A is basically the same as the simulation, 1.92A. The decreased current results of the use of the unstable $V_{bo}$ of 5.38V, instead of the theoric 4.7V.</p>
+<p>There is not a lot of information about the simulated diode (<a href="https://www.microsemi.com/document-portal/doc_view/10928-sa5-7-datasheet">1N750</a>), but we know, from the datasheet, the
+<strong>Absolute Maximum Power Dissipation</strong> is around 500mW. This is a limit we <em>must</em> respect and choose a resistor according to this maximum rating.
+The maximum current flowing through the diode without messing up with the its normal behaviour can be calculated as:</p>
+<p>
+<script type="math/tex; mode=display"> I = \frac{500mW}{4.7V} A</script>
+<script type="math/tex; mode=display"> I = 100mA</script>
+</p>
+<p>The <strong>absolute</strong> maximum current is as smaller as 100mA (not using the internal series resistor of the zener diode!).</p>
+<p><em>Better safe than sorry</em> - we can choose a resistor that allows the flow of 10mA:</p>
+<p>
+<script type="math/tex; mode=display"> I = \frac{V_{i} - V_{bo}}{1000\Omega} A</script>
+<script type="math/tex; mode=display"> I = \frac{15V - 4.7V}{1000\Omega} A</script>
+<script type="math/tex; mode=display"> I = 10 mA</script>
+</p>
+<p>A resistor of 1k$\Omega$ fits perfectly!</p>
+<p>Now, let's try to simulate these changes:</p>
+<p><img alt="1k Zener Simulation" src="../img/ltspice_sim_zener.png" /></p>
+<p>Matches previous values!</p>
+<h3 id="decrease-the-resistance-and-get-cooler">Decrease the resistance and get cooler</h3>
+<p>As we have seen before, the power dissipation of the Zener Diode can be set as $P = V_{bo} * I_{r}$.
+If your data line doesn't need that much current, it is possible to reduce it by increasing the resistance in series.
+If the data line draws 10mA, the power dissipation is around 47mW.
+But, what if we just need 1mA?</p>
+<p>
+<script type="math/tex; mode=display"> P = V_{bo} * I_{r}</script>
+<script type="math/tex; mode=display"> P = 4.7V * 0,001A</script>
+<script type="math/tex; mode=display"> P = 4.7mW </script>
+</p>
+<p>By re-thinking the design, we can decrease the power dissipation of our design and turn everything more efficient!</p>
+<p>(14/05/2021)</p></article>
+        
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="nunoguterres" data-show-count="false">Tweet</a>
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        
+      </div>
+    </section>
+
+    <section class="hero is-link">
+      <div class="hero-body">
+        <p class="title">
+          Follow me around the internet ⤵
+        </p>
+        <p class="subtitle">
+          <div class="internet_links">
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/nunognogueira/"
+              >
+                <img
+                  src="../../icons/instagram.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://twitter.com/nunoguterres"
+              >
+                <img
+                  src="../../icons/twitter.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.linkedin.com/in/guterresnogueira/"
+              >
+                <img
+                  src="../../icons/linkedin.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/nguterresn"
+              >
+                <img
+                  src="../../icons/github.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+          </div>
+        </p>
+        <br>
+        <p class="subtitle">
+          <img src="../../icons/nuno.png" alt="" width="80" height="80">
+        </p>
+      </div>
+    </section>
+  </body>
+</html>

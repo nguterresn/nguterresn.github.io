@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    
+      <meta name="description" content="A place where I write about what I'm doing during the weekend." />
+    
+    
+      <meta name="author" content="Nuno Nogueira" />
+    
+
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://guterresnogueira.com/content/end-of-line-board/">
+    <meta property="twitter:title" content="End of line board">
+    <meta property="twitter:image" content="../../favicon/android-chrome-192x192.png">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+
+    <title>
+      End of line board - Nuno Nogueira
+    </title>
+
+    <!-- Bulma CSS framework -->
+    <!-- <link href="../../bulma.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="../../style.css" rel="stylesheet" />
+    <link href="../../code_theme.css" rel="stylesheet" />
+
+    <!-- Script to support LaTex -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+    <!-- Import custom script -->
+    <!-- Custom code, enable support for inline LaTex equations -->
+    <script type="text/javascript" src="../../script.js" defer></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G15FQ3N6VZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-G15FQ3N6VZ');
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="container is-max-desktop">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="../..">
+              Nuno Guterres Nogueira
+            </a>
+            <a
+              role="button"
+              class="navbar-burger"
+              aria-label="menu"
+              aria-expanded="false"
+              data-target="navbar_menu"
+            >
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <div class="navbar-menu" id="navbar_menu">
+            <div class="navbar-end">
+               
+              <a
+                class="navbar-item"
+                href="../.."
+              >
+                Home
+              </a>
+              
+              <a
+                class="navbar-item"
+                href="https://m.me/nunoguterresn"
+              >
+                Contact me
+              </a>
+               
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <article class="content"><h3 id="board-to-help-you-test-end-of-line-on-your-access-control-system">Board to help you test end of line on your access control system</h3>
+<p>I think I've started to work on a <a href="https://github.com/nguterresn/end-of-line-board">End of Line testing board</a> back in the summer of 2022, but never actually used it or wrote about it. Recently, I've revisited this in order to make it a <em>releasable</em> product.</p>
+<p><img alt="render" src="https://user-images.githubusercontent.com/38976366/162028981-bbf3a0d9-4f4c-46dd-9886-34df5c543ee9.jpg" /></p>
+<p>Back when I started designing this board, I wrote some documents about the <strong>End Of Line technology</strong> and uploaded it to my github, <a href="https://github.com/nguterresn/end-of-line-board/tree/master/docs">here</a>.</p>
+<p>The image above does not mirror how the board is 100% - I've changed the front screw terminals from three 2P to one 6P, reducing the cost and the amount of components to solder. Nevertheless, you can take the 3D view of the PCB down in the <a href="https://github.com/nguterresn/end-of-line-board">README</a> as the source of truth.</p>
+<p>So far, I believe most of the people use <strong>2k2 as the main resistor and 1k as the secondary</strong> one, and, although the board labels state these values, you can use whatever you would like - the footprint is the same (0603).
+I've also used push/latch buttons to mock the behaviour of a contact sensor without taking so much space. You can argue that any slide switch would do the same here, but I think we would just end up discussing about personal preferences. I choose these ones because I <em>do believe</em> it is closest to a contact sensor: most of the times is closed (button is pressed) and only is open a few times (button is released).</p>
+<p>It is pretty easy to use this board for testing your access control system. As stated before, <strong>whenever the button is pressed it will have the same behaviour as a closed contact sensor</strong>, and the opposite happens when it is released. <strong>The small slider buttons can trigger a <em>cut</em> or a <em>short</em></strong>, and it doesn't matter if the latch button is pressed or released. Each screw terminal output pair should be connected to your access control system.</p>
+<p>Just as a final note: the repository doesn't include any BOM file, but the KiCad project as all the symbols used linked with a <a href="https://www.lcsc.com">LCSC</a> code. So, if you are interested to order the board, and the all the respective components, it should be straightforward.</p></article>
+        
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="nunoguterres" data-show-count="false">Tweet</a>
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        
+      </div>
+    </section>
+
+    <section class="hero is-link">
+      <div class="hero-body">
+        <p class="title">
+          Follow me around the internet ⤵
+        </p>
+        <p class="subtitle">
+          <div class="internet_links">
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/nunognogueira/"
+              >
+                <img
+                  src="../../icons/instagram.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://twitter.com/nunoguterres"
+              >
+                <img
+                  src="../../icons/twitter.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.linkedin.com/in/guterresnogueira/"
+              >
+                <img
+                  src="../../icons/linkedin.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/nguterresn"
+              >
+                <img
+                  src="../../icons/github.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+          </div>
+        </p>
+        <br>
+        <p class="subtitle">
+          <img src="../../icons/nuno.png" alt="" width="80" height="80">
+        </p>
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    
+      <meta name="description" content="A place where I write about what I'm doing during the weekend." />
+    
+    
+      <meta name="author" content="Nuno Nogueira" />
+    
+
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://guterresnogueira.com/content/fpga-and-avalon-interfaces/">
+    <meta property="twitter:title" content="FPGA and Avalon Interfaces">
+    <meta property="twitter:image" content="../../favicon/android-chrome-192x192.png">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+
+    <title>
+      FPGA and Avalon Interfaces - Nuno Nogueira
+    </title>
+
+    <!-- Bulma CSS framework -->
+    <!-- <link href="../../bulma.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="../../style.css" rel="stylesheet" />
+    <link href="../../code_theme.css" rel="stylesheet" />
+
+    <!-- Script to support LaTex -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+    <!-- Import custom script -->
+    <!-- Custom code, enable support for inline LaTex equations -->
+    <script type="text/javascript" src="../../script.js" defer></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G15FQ3N6VZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-G15FQ3N6VZ');
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="container is-max-desktop">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="../..">
+              Nuno Guterres Nogueira
+            </a>
+            <a
+              role="button"
+              class="navbar-burger"
+              aria-label="menu"
+              aria-expanded="false"
+              data-target="navbar_menu"
+            >
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <div class="navbar-menu" id="navbar_menu">
+            <div class="navbar-end">
+               
+              <a
+                class="navbar-item"
+                href="../.."
+              >
+                Home
+              </a>
+              
+              <a
+                class="navbar-item"
+                href="https://m.me/nunoguterresn"
+              >
+                Contact me
+              </a>
+               
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <article class="content"><h1 id="fpga-and-avalon-interfaces">FPGA and Avalon Interfaces</h1>
+<p>As I said in a previous post, I have been working with the Cyclone GX Starter kit FPGA, which has come up a really nice surprise as a <em>way</em> of development. I mean way of development because it is very different compared to the normal way of development of embedded software I'm used to.</p>
+<p>Every manufacturer has its own IP (Intellectual Property) and, therefore, its own interface between them. Intel calls the interface <strong><a href="https://www.intel.com/content/dam/www/programmable/us/en/pdfs/literature/manual/mnl_avalon_spec.pdf">Avalon</a></strong> which is responsible to connect the components in the Intel FPGA. </p>
+<p>Avalon interface can be divided into seven types:</p>
+<ul>
+<li><strong>Avalon Streaming Interface (Avalon-ST) -</strong> unidirectional flow of data, including multiplexed streams, packets, and DSP data.</li>
+<li><strong>Avalon Memory Mapped Interface (Avalon-MM) -</strong> address-based read/write
+interface typical of master–slave connections. Typically components like MCUs, memories, UARTs, DMAs and timers use this kind of interface.</li>
+<li><strong>Avalon Conduit Interface - o</strong>thers connections which do not fit in any of above. Exported conduit</li>
+<li><strong>Avalon Tri-State Conduit Interface (Avalon-TC) -</strong> interface that supports connections to off-chip peripherals.</li>
+<li><strong>Avalon Interrupt Interface -</strong> interface that allows components to signal events
+to other components.</li>
+<li><strong>Avalon Clock Interface -</strong> interface that drives or receives clocks.</li>
+<li><strong>Avalon Reset Interface</strong> - interface that provides reset connectivity</li>
+</ul>
+<p>Every type of Avalon interface is very complex and this is just a brief of what they do. Plus, a cool thing about the Avalon interface is that they are an open standard, is ok to develop and sell products based on them.</p>
+<p><img alt="FPGA%20and%20Avalon%20Interfaces%2053c19b95143945fcbbc2b54d891f6cfd/Screenshot_2020-12-10_192159.png" src="../img/Screenshot_2020-12-10_192159.png" /></p>
+<p>So, in the image above it is possible to visualize the many types of Avalon Interfaces and its connections.</p>
+<p>The Avalon Tri-state Interface is connected to SSRAM, Flash or DDRD3 RAM and each one has it own controller. The SSRAM and the Flash have a Conduit Bridge, which allows the interface to be connected to the board GPIOs when exported in the Platform Designer.</p>
+<p>From this <a href="https://people.ece.cornell.edu/land/courses/ece5760/DE1_SOC/HPS_peripherials/Qsys_index.html">Cornell university ECE web page</a> I found this image that exactly shows the relation between Avalon, Platform Designer (Qsys) and Verilog.</p>
+<p><img alt="FPGA%20and%20Avalon%20Interfaces%2053c19b95143945fcbbc2b54d891f6cfd/Untitled.png" src="../img/Untitled.png" /></p>
+<hr />
+<h2 id="avalon-clock-and-reset-interfaces">Avalon Clock and Reset Interfaces</h2>
+<p>Components of FPGA can have clock inputs or clock outputs (or even both). As an example, Intel shows a PLL core:</p>
+<p><img alt="FPGA%20and%20Avalon%20Interfaces%2053c19b95143945fcbbc2b54d891f6cfd/Untitled%201.png" src="../img/Untitled%201.png" /></p>
+<p>A PLL is normally used to create new clocks in order to meet some time requirement. Having a input reset (reset) and a input clock (ref_clk), creates 1 to N clock sources. One example of the use of the PLL in the FPGA is to create a clock to meet the ADC time requirements. The FPGA clock is normally 50MHz, and the <a href="https://www.analog.com/media/en/technical-documentation/data-sheets/2308fc.pdf">LTC2308</a> only works up to 40MHz on the SPI clock. So PLL is used to create a new clock source, at a frequency of 40MHz or less.</p>
+<hr />
+<h2 id="avalon-memory-mapped-interface">Avalon Memory-Mapped Interface</h2>
+<p>These ones are much more complex than clock and reset interfaces. From the previous definition of MM Interfaces, I found one that suits better in order to understand:</p>
+<blockquote>
+<p>(...) Avalon Memory-Mapped Interface is a bus-like protocol that allows two components to exchange data. One component implements a master interface that allows it to request and send data to slave components.</p>
+</blockquote>
+<p>The MM Interfaces have something called <em>signal roles.</em> The first <em>signal role</em> is the <em>address</em> that is used to know <em>where</em> to write data or to read data<em>.</em> Has a width between 1 and 64 bits. It's <a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=&amp;ved=2ahUKEwjC4YCf8sXtAhWRlFwKHWg6AqEQFjAAegQIAhAC&amp;url=ftp%3A%2F%2Fftp.intel.com%2Fpub%2Ffpgaup%2Fpub%2FIntel_Material%2F16.1%2FTutorials%2FMaking_Qsys_Components.pdf&amp;usg=AOvVaw2EDm-u8WpwqKzcgOdgyDm2">easier to understand</a> if a master has four 32-bit addresses to select four register in slave device.</p>
+<p><img alt="FPGA%20and%20Avalon%20Interfaces%2053c19b95143945fcbbc2b54d891f6cfd/Untitled%202.png" src="../img/Untitled%202.png" /></p>
+<p>Starting with a 32-bit address 0x1000_0000, to write to the most significant byte of the first register I would write to the address 0x1000_0003. Therefore each byte can be accessed choosing the corresponding address. For example, second byte of the third register can be accessed by the address 0x1000_0009.</p>
+<p>From the <a href="https://www.intel.com/content/dam/www/programmable/us/en/pdfs/literature/manual/mnl_avalon_spec.pdf">Avalon Interface Specifications</a>, an example may also be:</p>
+<blockquote>
+<p>(...) For example, <em>address</em> = 0 selects the first word of the slave. <em>address</em> = 1 selects the second word of the slave.</p>
+</blockquote>
+<p>This quote confirms what I wrote above, but in a more simple and abstract way 😃</p>
+<p>Although <em>address</em> is very important between MM Interfaces, is not required. <em>Signal roles</em> like <em>readdata</em>, <em>write</em> and <em>writedata</em> are required. Based on the minimum requirements, <em>readdata</em> is required for a read-only interface or <em>write</em> and <em>writedata</em> for a write-only interface.</p>
+<p><img alt="FPGA%20and%20Avalon%20Interfaces%2053c19b95143945fcbbc2b54d891f6cfd/Untitled%203.png" src="../img/Untitled%203.png" /></p>
+<p>In the image above it is possible to visualize how masters and slaves work with their <em>signal roles</em>.</p></article>
+        
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="nunoguterres" data-show-count="false">Tweet</a>
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        
+      </div>
+    </section>
+
+    <section class="hero is-link">
+      <div class="hero-body">
+        <p class="title">
+          Follow me around the internet ⤵
+        </p>
+        <p class="subtitle">
+          <div class="internet_links">
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/nunognogueira/"
+              >
+                <img
+                  src="../../icons/instagram.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://twitter.com/nunoguterres"
+              >
+                <img
+                  src="../../icons/twitter.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.linkedin.com/in/guterresnogueira/"
+              >
+                <img
+                  src="../../icons/linkedin.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/nguterresn"
+              >
+                <img
+                  src="../../icons/github.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+          </div>
+        </p>
+        <br>
+        <p class="subtitle">
+          <img src="../../icons/nuno.png" alt="" width="80" height="80">
+        </p>
+      </div>
+    </section>
+  </body>
+</html>

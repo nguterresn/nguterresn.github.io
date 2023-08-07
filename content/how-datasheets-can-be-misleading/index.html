@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    
+      <meta name="description" content="A place where I write about what I'm doing during the weekend." />
+    
+    
+      <meta name="author" content="Nuno Nogueira" />
+    
+
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://guterresnogueira.com/content/how-datasheets-can-be-misleading/">
+    <meta property="twitter:title" content="How to read a datasheet and how it can be misleading (MCP73827)">
+    <meta property="twitter:image" content="../../favicon/android-chrome-192x192.png">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+
+    <title>
+      How to read a datasheet and how it can be misleading (MCP73827) - Nuno Nogueira
+    </title>
+
+    <!-- Bulma CSS framework -->
+    <!-- <link href="../../bulma.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="../../style.css" rel="stylesheet" />
+    <link href="../../code_theme.css" rel="stylesheet" />
+
+    <!-- Script to support LaTex -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+    <!-- Import custom script -->
+    <!-- Custom code, enable support for inline LaTex equations -->
+    <script type="text/javascript" src="../../script.js" defer></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G15FQ3N6VZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-G15FQ3N6VZ');
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="container is-max-desktop">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="../..">
+              Nuno Guterres Nogueira
+            </a>
+            <a
+              role="button"
+              class="navbar-burger"
+              aria-label="menu"
+              aria-expanded="false"
+              data-target="navbar_menu"
+            >
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <div class="navbar-menu" id="navbar_menu">
+            <div class="navbar-end">
+               
+              <a
+                class="navbar-item"
+                href="../.."
+              >
+                Home
+              </a>
+              
+              <a
+                class="navbar-item"
+                href="https://m.me/nunoguterresn"
+              >
+                Contact me
+              </a>
+               
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <article class="content"><h1 id="how-to-read-a-datasheet-and-how-it-can-be-misleading-mcp73827">How to read a datasheet and how it can be misleading (MCP73827)</h1>
+<p>I had designed a board in which a battery charger chip was used - the <a href="http://ww1.microchip.com/downloads/en/DeviceDoc/21704B.pdf">MCP73827</a>. It is a very simple chip and a <em>typical application</em> can be seen in the first page of the datasheet.</p>
+<p><img alt="Typical Appilication Circuit for MCP73827" src="../img/typicalAppCircuitMCP73827.png" /></p>
+<p>This first circuit is not wrong, but it is - it is not ideal and it should not be used in any application. <strong>This figure led me to believe it was OK.</strong></p>
+<h3 id="first-check-of-the-design">First check of the design</h3>
+<p>Fastforward to the moment I receive the final design in hands, I started to test it and plugged a LiPo 3.7V cell to it. After some checking here and there, everything looked OK.</p>
+<p><img alt="Design charging battery" src="../img/IMG_6192.jpg" /></p>
+<h3 id="when-the-problem-started">When the problem started</h3>
+<p>Some time had passed and the battery was fully charged ($~4.2V$). When I turned down the input voltage, the LED, responsible to give feedback about the charging state, <strong>was still ON</strong>. Weird, right?</p>
+<p>My first thought was - something is shorted in the design. Checked again every node of the electronic circuit, nothing. The 100m Ohms resistor almost tricked me into thinking both ends were shorted, but no, nothing was shorted.</p>
+<p>Next, I checked the voltage at every critical pin of the battery charger:</p>
+<ul>
+<li>$V_{gs} = -2.73V$</li>
+<li>$V_{in} = 4.2V$</li>
+<li>$V_{mode} = 1.72V$</li>
+</ul>
+<p>The transistor was letting current pass from drain, battery, to the source, chip. So, the chip was being supplied by the battery it was supposed to control the charge. Weird!
+How is this possible?</p>
+<h3 id="easy-solution-for-someone-who-reads">Easy solution for someone who reads</h3>
+<p><strong>I had absolutely no idea what was the problem.</strong> The chip was working but I did not want the battery to discharge and supply the battery charger, while it was not being charged - I knew there was a problem there, just couldn't find the reason.</p>
+<p>Luckily, there are smart people in this world who are glad to help distracted people like me. I posted on reddit on why this happens, and the reason was clear - the <strong>SHDN</strong> pin is connected to $V_{in}$. <strong>So, the chip would still work as long as the voltage at the edge of SHDN was bigger than 40% of $V_{in}$.</strong></p>
+<p><img alt="Shutdown pin voltage ratings" src="../img/shutdownPin_voltage.png" /></p>
+<p>Well, as previously seen, $V_{in}$ had $4.2V$ at its terminals, causing the chip to be enabled, even when it had nothing coming from the input supply. This is not a huge problem, as the MCP73827 will enter in a low power mode if the input voltage is less than the output voltage:</p>
+<blockquote>
+<p>In the stand-alone configuration, the shutdown pin is generally tied to the input voltage. The MCP73827 will automatically enter a low power mode when the input voltage is less than the output voltage reducing the battery drain current to 8 μA, typically.</p>
+</blockquote>
+<p>The chip goes into a low power mode and it draws very low current from the battery, but the LED is still ON and draws way more current. This is something that is not ideal at all and should not have been used as a <em>typical application</em>!</p>
+<h3 id="a-new-typical-application-circuit">A new typical application circuit</h3>
+<p>At the middle of the datasheet, they present another <em>typical application circuit</em>, this time without the <strong>SHDN</strong> pin problem.</p>
+<p><img alt="Another typical circuit" src="../img/AnotherTypicalCircuit.png" /></p>
+<blockquote>
+<p>By connecting the shutdown pin as depicted in Figure 6-1, the battery drain current may be further reduced. In this application, the battery drain current becomes a function of the reverse leakage current of the reverse protection diode.</p>
+</blockquote>
+<p>And just like that, the problem is solved.</p>
+<h3 id="further-reading">Further reading</h3>
+<p>The use of the voltage divider on the <strong>SHDN</strong> pin is to limit the voltage on its terminals, as the pins can only deal with $V_{in} + 0.3V$. Since the <strong>SHDN</strong> is now connected before the diode, and the diode normally has a voltage droupout bigger than $0.3V$, it could easily exceed the maximum ratings.</p>
+<blockquote>
+<p>All inputs and outputs w.r.t. GND ................-0.3 to (VIN+0.3)V</p>
+</blockquote>
+<h6 id="13022022">(13/02/2022)</h6></article>
+        
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="nunoguterres" data-show-count="false">Tweet</a>
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        
+      </div>
+    </section>
+
+    <section class="hero is-link">
+      <div class="hero-body">
+        <p class="title">
+          Follow me around the internet ⤵
+        </p>
+        <p class="subtitle">
+          <div class="internet_links">
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/nunognogueira/"
+              >
+                <img
+                  src="../../icons/instagram.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://twitter.com/nunoguterres"
+              >
+                <img
+                  src="../../icons/twitter.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.linkedin.com/in/guterresnogueira/"
+              >
+                <img
+                  src="../../icons/linkedin.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/nguterresn"
+              >
+                <img
+                  src="../../icons/github.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+          </div>
+        </p>
+        <br>
+        <p class="subtitle">
+          <img src="../../icons/nuno.png" alt="" width="80" height="80">
+        </p>
+      </div>
+    </section>
+  </body>
+</html>

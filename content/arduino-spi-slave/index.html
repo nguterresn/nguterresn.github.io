@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    
+      <meta name="description" content="A place where I write about what I'm doing during the weekend." />
+    
+    
+      <meta name="author" content="Nuno Nogueira" />
+    
+
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://guterresnogueira.com/content/arduino-spi-slave/">
+    <meta property="twitter:title" content="Arduino Due Slave Mode">
+    <meta property="twitter:image" content="../../favicon/android-chrome-192x192.png">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+
+    <title>
+      Arduino Due Slave Mode - Nuno Nogueira
+    </title>
+
+    <!-- Bulma CSS framework -->
+    <!-- <link href="../../bulma.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="../../style.css" rel="stylesheet" />
+    <link href="../../code_theme.css" rel="stylesheet" />
+
+    <!-- Script to support LaTex -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+    <!-- Import custom script -->
+    <!-- Custom code, enable support for inline LaTex equations -->
+    <script type="text/javascript" src="../../script.js" defer></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G15FQ3N6VZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-G15FQ3N6VZ');
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="container is-max-desktop">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="../..">
+              Nuno Guterres Nogueira
+            </a>
+            <a
+              role="button"
+              class="navbar-burger"
+              aria-label="menu"
+              aria-expanded="false"
+              data-target="navbar_menu"
+            >
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <div class="navbar-menu" id="navbar_menu">
+            <div class="navbar-end">
+               
+              <a
+                class="navbar-item"
+                href="../.."
+              >
+                Home
+              </a>
+              
+              <a
+                class="navbar-item"
+                href="https://m.me/nunoguterresn"
+              >
+                Contact me
+              </a>
+               
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <article class="content"><h1 id="arduino-due-slave-mode">Arduino Due Slave Mode</h1>
+<p>Recently I had the chance of spending time programming an Arduino Due.
+The idea was to make it work with SPI in a slave mode. Unfortunally, the Arduino library only has support for master mode, so I had to go through the SAM3X8E datasheet and find out how I would do it.
+This was also the first time I ever <em>bare-metal</em> programmed an 32 bit chip, normally for hobbies, I use the Arduino library.
+Apart from sharing the code that might be useful for someone else, I want to share some other stuff that I leanerd while trying to establish the SPI communication.</p>
+<p><strong>First thing</strong>: 32 bit microcontrollers are much more complex than 8 bit ones. Ok, it might sound obvious but it really is much more complex!
+<strong>Pin handling</strong>: Pins are controlled by a PIO which stands for Parallel Input/Output Controller. Problem is, imagine that the pin also has another function, like SPI MISO line. It is necessary to disable the controller in order to access it!</p>
+<p>That's why I use something like this in the code:</p>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">enableSPIPins</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// 1: Disables the PIO from controlling the corresponding pin (enables peripheral control of the pin).</span>
+<span class="w">  </span><span class="n">REG_PIOA_PDR</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">PIO_PDR_P25</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PIO_PDR_P26</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PIO_PDR_P27</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PIO_PDR_P28</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>I disable the PIO A from controlling the P25 to P28, which are the ones we need to SPI protocol.
+From the page 40 of the <a href="https://ww1.microchip.com/downloads/en/devicedoc/atmel-11057-32-bit-cortex-m3-microcontroller-sam3x-sam3a_datasheet.pdf">datasheet</a>, we can see that:</p>
+<p><img alt="Arduino%20Due%20Slave%20Mode%201de8f316dc46409abdb85142ee08f862/Captura_de_ecra_2021-08-28_as_18.09.19.png" src="../img/Captura_de_ecra_2021-08-28_as_18.09.19.png" /></p>
+<p>As a peripheral A, PA25 has SPI0_MISO and as a peripheral B has the A18, which I suppose that is an ADC pin.
+<strong>Almost everything has to be powered on:</strong> apart from enabling the access to the SPI peripheral, it is also necessary to turn on the peripheral power for the instance ID.</p>
+<hr />
+<p><img alt="Arduino%20Due%20Slave%20Mode%201de8f316dc46409abdb85142ee08f862/Captura_de_ecra_2021-08-28_as_18.12.43.png" src="../img/Captura_de_ecra_2021-08-28_as_18.12.43.png" /></p>
+<p>The SPI0 instance ID is 24, so we can turn it on by:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// turn on periheral power (page 38) SPI0 and PIOA.</span>
+<span class="n">REG_PMC_PCER0</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">PMC_PCER0_PID24</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PMC_PCER0_PID11</span><span class="p">;</span><span class="w"></span>
+</code></pre></div>
+<hr />
+<h3 id="final-code">Final code:</h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// Pinout https://www.theengineeringprojects.com/wp-content/uploads/2018/09/introduction-to-arduino-due-2-1.png</span>
+<span class="c1">// With arduino macros https://github.com/manitou48/DUEZoo/blob/master/spislave.ino</span>
+<span class="c1">// Good doc https://microchipdeveloper.com/32arm:sam-bare-metal-c-programming</span>
+<span class="c1">// another good code about arduino due SPI slave https://github.com/MrScrith/arduino_due/blob/master/spi_slave.ino</span>
+
+<span class="c1">// FUNCTIONS</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">initSPI</span><span class="p">();</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">enableOnReceiveDataInterrupt</span><span class="p">();</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">disableOnReceiveDataInterrupt</span><span class="p">();</span><span class="w"></span>
+<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">readSPIData</span><span class="p">();</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">writeSPIData</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">);</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">waitUntilDataReceived</span><span class="p">();</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">waitUntilDataSent</span><span class="p">();</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">enableSPIPins</span><span class="p">();</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">Serial</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">initSPI</span><span class="p">();</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">waitUntilDataReceived</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">dataReceived</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readSPIData</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">dataReceived</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">initSPI</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Sets MISO as OUTPUT</span>
+<span class="w">  </span><span class="c1">// NSS0 (PA28) is pin digital 10</span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">MISO</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">MOSI</span><span class="p">,</span><span class="w"> </span><span class="n">INPUT</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">SCK</span><span class="p">,</span><span class="w"> </span><span class="n">INPUT</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">MISO</span><span class="p">,</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// turn off SPI</span>
+<span class="w">  </span><span class="n">REG_SPI0_CR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPI_CR_SPIDIS</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Write protection is disabled</span>
+<span class="w">  </span><span class="n">REG_SPI0_WPMR</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="o">~</span><span class="p">(</span><span class="n">SPI_WPMR_WPEN</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// turn on periheral power (page 38) SPI0 and PIOA.</span>
+<span class="w">  </span><span class="n">REG_PMC_PCER0</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">PMC_PCER0_PID24</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PMC_PCER0_PID11</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">enableSPIPins</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// RESET SPI</span>
+<span class="w">  </span><span class="c1">// enable interrupt register</span>
+<span class="w">  </span><span class="c1">// Slave mode &amp; mode fault detection is disabled</span>
+<span class="w">  </span><span class="n">REG_SPI0_MR</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="o">~</span><span class="p">(</span><span class="n">SPI_MR_MSTR</span><span class="p">);</span><span class="w"></span>
+<span class="w">  </span><span class="n">REG_SPI0_MR</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">SPI_MR_MODFDIS</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Select SPI MODE (NCPHA, CPOL) and number of bits (8 default)</span>
+<span class="w">  </span><span class="n">REG_SPI0_CSR</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">SPI_CSR_BITS_8_BIT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mh">0x02</span><span class="p">;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// turn on SPI</span>
+<span class="w">  </span><span class="n">REG_SPI0_CR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPI_CR_SPIEN</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">enableSPIPins</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// 1: Disables the PIO from controlling the corresponding pin (enables peripheral control of the pin).</span>
+<span class="w">  </span><span class="n">REG_PIOA_PDR</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">PIO_PDR_P25</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PIO_PDR_P26</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PIO_PDR_P27</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">PIO_PDR_P28</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">enableOnReceiveDataInterrupt</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Enable interrupt on receive data</span>
+<span class="w">  </span><span class="n">REG_SPI0_IER</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">SPI_IER_RDRF</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">disableOnReceiveDataInterrupt</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="c1">// Disable interrupt on receive data</span>
+<span class="w">  </span><span class="n">REG_SPI0_IDR</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">SPI_IDR_RDRF</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">uint8_t</span><span class="w"> </span><span class="nf">readSPIData</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">REG_SPI0_RDR</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">writeSPIData</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">REG_SPI0_TDR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// We can either use this or an interruption.</span>
+<span class="c1">// Interruption might be better since it is not blocking!</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">waitUntilDataReceived</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">REG_SPI0_SR</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">SPI_SR_RDRF</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">waitUntilDataSent</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">REG_SPI0_SR</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">SPI_SR_TDRE</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p><a href="https://gist.github.com/nguterresn/499bfa8940deb7ed0c234aa60e208f52">Link for the gist!</a></p></article>
+        
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="nunoguterres" data-show-count="false">Tweet</a>
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        
+      </div>
+    </section>
+
+    <section class="hero is-link">
+      <div class="hero-body">
+        <p class="title">
+          Follow me around the internet ⤵
+        </p>
+        <p class="subtitle">
+          <div class="internet_links">
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/nunognogueira/"
+              >
+                <img
+                  src="../../icons/instagram.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://twitter.com/nunoguterres"
+              >
+                <img
+                  src="../../icons/twitter.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.linkedin.com/in/guterresnogueira/"
+              >
+                <img
+                  src="../../icons/linkedin.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/nguterresn"
+              >
+                <img
+                  src="../../icons/github.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+          </div>
+        </p>
+        <br>
+        <p class="subtitle">
+          <img src="../../icons/nuno.png" alt="" width="80" height="80">
+        </p>
+      </div>
+    </section>
+  </body>
+</html>

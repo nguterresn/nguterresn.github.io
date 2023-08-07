@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    
+      <meta name="description" content="A place where I write about what I'm doing during the weekend." />
+    
+    
+      <meta name="author" content="Nuno Nogueira" />
+    
+
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://guterresnogueira.com/content/fpga-python-script/">
+    <meta property="twitter:title" content="Compile, Program and Run a FPGA using Python scripts">
+    <meta property="twitter:image" content="../../favicon/android-chrome-192x192.png">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+
+    <title>
+      Compile, Program and Run a FPGA using Python scripts - Nuno Nogueira
+    </title>
+
+    <!-- Bulma CSS framework -->
+    <!-- <link href="../../bulma.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="../../style.css" rel="stylesheet" />
+    <link href="../../code_theme.css" rel="stylesheet" />
+
+    <!-- Script to support LaTex -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+    <!-- Import custom script -->
+    <!-- Custom code, enable support for inline LaTex equations -->
+    <script type="text/javascript" src="../../script.js" defer></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G15FQ3N6VZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-G15FQ3N6VZ');
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="container is-max-desktop">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="../..">
+              Nuno Guterres Nogueira
+            </a>
+            <a
+              role="button"
+              class="navbar-burger"
+              aria-label="menu"
+              aria-expanded="false"
+              data-target="navbar_menu"
+            >
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <div class="navbar-menu" id="navbar_menu">
+            <div class="navbar-end">
+               
+              <a
+                class="navbar-item"
+                href="../.."
+              >
+                Home
+              </a>
+              
+              <a
+                class="navbar-item"
+                href="https://m.me/nunoguterresn"
+              >
+                Contact me
+              </a>
+               
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <article class="content"><h1 id="compile-program-and-run-a-fpga-using-python-scripts">Compile, Program and Run a FPGA using Python scripts</h1>
+<h6>09/02/2021</h6>
+<h6>Revisited on 02/08/2022</h6>
+
+<p>Using an IDE is good for development, but when the work is done, there is no big reason to continue to open the IDE and click <strong>"Compile, Program, Run..."</strong>. So, the best solution is to run scripts and automate the process!</p>
+<p>The FPGA needs to <strong>compile</strong>, be <strong>programmed</strong> and then <strong>run the C file</strong> over <strong>Nios 2 processor</strong>. The compiling and programming can be done only using Quartus tools, but, in order to Run a C file, it is necessary to <strong>use the Nios 2 Command Shell.</strong> Therefore, compiling and programming will be done using the Quartus Tools while building and running a C file can be done using the Nios 2 Command Shell.</p>
+<p>Before starting, note that everything is done in a Windows computer. In a Linux computer the steps would be similar, yet different.</p>
+<p>All the documentation is available online. A good reference is the <a href="https://www.intel.com/content/dam/www/programmable/us/en/pdfs/literature/manual/tclscriptrefmnl.pdf">Quartus II Scripting Reference Manual</a> and the <a href="https://www.intel.com/content/dam/www/programmable/us/en/pdfs/literature/hb/nios2/n2sw_nii5v2gen2.pdf">Nios II Software Developer Handbook</a>, for Quartus Tools and Nios 2 Command Shell, respectively.</p>
+<h2 id="quartus-tools">Quartus Tools</h2>
+<h3 id="compile">Compile</h3>
+<p>Using <code>quartus_sh</code> is possible to run commands using a shell, which has a very small foorprint.</p>
+<div class="highlight"><pre><span></span><code><span class="n">quartus_sh</span> <span class="o">--</span><span class="n">flow</span> <span class="nb">compile</span> <span class="o">&lt;</span><span class="n">top</span> <span class="n">file</span><span class="o">&gt;</span>
+</code></pre></div>
+<p>Running this command allows us to compile using the <strong>top</strong> file of the project.</p>
+<h3 id="program">Program</h3>
+<p>To program, it is not used the <code>quartus_sh</code> anymore but the <code>quartus_pgm</code> instead.</p>
+<div class="highlight"><pre><span></span><code><span class="n">quartus_pgm</span> <span class="o">-</span><span class="n">l</span> <span class="c1"># to display the list of available hardware</span>
+</code></pre></div>
+<p><strong>Note</strong>: try this command above to check if there are any USB-Blaster connected.</p>
+<p>After testing connection, try to run the following command to program the previous compiled files to the FPGA:</p>
+<div class="highlight"><pre><span></span><code><span class="n">quartus_pgm</span> <span class="o">-</span><span class="n">c</span> <span class="n">USB</span><span class="o">-</span><span class="n">Blaster</span> <span class="o">-</span><span class="n">m</span> <span class="n">jtag</span> <span class="o">-</span><span class="n">o</span> <span class="n">p</span><span class="p">;</span><span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="o">.</span><span class="n">sof</span> <span class="n">file</span><span class="o">&gt;</span>
+</code></pre></div>
+<p>If the command does not fail, the FPGA is now successfully programmed through USB-Blaster using JTAG.</p>
+<h2 id="nios-2-command-shell">Nios 2 Command Shell</h2>
+<p>This shell uses <strong>Windows Subsystem for Linux</strong> and, although some things are similar, others are not.</p>
+<p>Nios 2 Command Shell uses the <strong>Linux terminal</strong> instead of Windows' Power Shell, so it's possible to use Linux terminal commands like <code>cd</code> or <code>make</code>.</p>
+<p>After programming the FPGA, the system is changed - this means that the board support package (BSP) also needs to be refreshed or updated with new system parameters or characteristics. (<a href="http://guterresnogueira.com/content/fpga/fpga_ltc2308_eclipse.html">Check older articles about this</a>)</p>
+<h3 id="updating-bsp">Updating BSP</h3>
+<p>To update the BSP the command is the following:</p>
+<div class="highlight"><pre><span></span><code><span class="n">Nios</span> <span class="n">II</span> <span class="n">Command</span> <span class="n">Shell</span><span class="o">.</span><span class="n">bat</span> <span class="n">nios2</span><span class="o">-</span><span class="n">bsp</span><span class="o">-</span><span class="n">generate</span><span class="o">-</span><span class="n">files</span><span class="o">.</span><span class="n">exe</span> <span class="o">--</span><span class="n">bsp</span><span class="o">-</span><span class="nb">dir</span> <span class="o">&lt;</span><span class="n">path_to_bsp_files</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">settings</span> <span class="o">&lt;</span><span class="n">path_to_settings</span><span class="o">.</span><span class="n">bsp</span><span class="o">&gt;</span>
+</code></pre></div>
+<p><code>Nios II Command Shell.bat</code> opens the Linux terminal necessary to use the followed commands, like <code>nios2-bsp-generate-files.exe</code></p>
+<p><strong>Note:</strong> if the software folder project name is <em>adcnios</em> the BSP directory will be <em>adcnios_bsp</em>.</p>
+<p>After updating the BSP is now ok to <strong>build</strong> and <strong>run</strong> the C program written.</p>
+<h3 id="build">Build</h3>
+<p>To build, run:</p>
+<div class="highlight"><pre><span></span><code><span class="n">Nios</span> <span class="n">II</span> <span class="n">Command</span> <span class="n">Shell</span><span class="o">.</span><span class="n">bat</span> <span class="n">make</span> <span class="nb">all</span> <span class="o">-</span><span class="n">C</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">software</span> <span class="n">project</span> <span class="n">folder</span><span class="o">&gt;</span>
+</code></pre></div>
+<p>The <code>make</code> command builds the C file and checks if there is any error!</p>
+<h3 id="run">Run</h3>
+<p><strong>If there are no errors</strong>, it is safe to proceed by running:</p>
+<div class="highlight"><pre><span></span><code><span class="n">Nios</span> <span class="n">II</span> <span class="n">Command</span> <span class="n">Shell</span><span class="o">.</span><span class="n">bat</span> <span class="n">nios2</span><span class="o">-</span><span class="n">download</span> <span class="o">-</span><span class="n">g</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="o">.</span><span class="n">elf</span> <span class="n">file</span><span class="o">&gt;</span>
+</code></pre></div>
+<p>The terminal should output some text informing the <strong>processor is being programmed with the new C file and is running.</strong></p>
+<p><strong>Note:</strong> '-g' enables the processor to run. If the '-g' is not specified, the processor will be paused even though the code is flashed.</p>
+<h2 id="scripting-with-python">Scripting with Python</h2>
+<p>To run terminal commands using Python there are a few possibilities. The most part of developers recommend to use the <a href="https://docs.python.org/3/library/subprocess.html">subprocess library.</a></p>
+<p>By using this library, running a terminal command in python is as easy as:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">quartus_sh</span> <span class="p">,</span> <span class="s1">&#39;--flow&#39;</span> <span class="p">,</span> <span class="s1">&#39;compile&#39;</span><span class="p">,</span> <span class="n">ADC_TOP_PATH</span><span class="p">],</span> <span class="n">shell</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<p>Inside [ ] is the first command in the Quartus Tools, the equivalent to:</p>
+<div class="highlight"><pre><span></span><code><span class="n">quartus_sh</span> <span class="o">--</span><span class="n">flow</span> <span class="nb">compile</span> <span class="o">&lt;</span><span class="n">top</span> <span class="n">file</span><span class="o">&gt;</span>
+</code></pre></div>
+<p>And <strong>ADC_TOP_PATH</strong> is a string variable pointing to the path of the top file of the project.</p>
+<p>By using <code>subprocess</code> to all of the previous commands, it is possible to get something like this:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="c1">## QUARTUS SIDE</span>
+<span class="c1"># Compiles project</span>
+<span class="n">compileFPGA</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">QUARTUS_SH</span><span class="p">,</span> <span class="s1">&#39;--flow&#39;</span> <span class="p">,</span> <span class="s1">&#39;compile&#39;</span><span class="p">,</span> <span class="n">ADC_TOP_PATH</span><span class="p">],</span> <span class="n">shell</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Program FPGA</span>
+<span class="n">programFPGA</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">QUARTUS_PGM</span><span class="p">,</span> <span class="s1">&#39;-c&#39;</span> <span class="p">,</span> <span class="s1">&#39;USB-Blaster&#39;</span><span class="p">,</span> <span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="s1">&#39;jtag&#39;</span><span class="p">,</span> <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="s1">&#39;p;&#39;</span><span class="o">+</span> <span class="n">ADC_SOF</span><span class="p">],</span> <span class="n">shell</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">## NIOS2 SIDE</span>
+<span class="c1"># Update BSP and sent settings</span>
+<span class="n">update_bsp</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">NIOS2SHELL</span><span class="p">,</span> <span class="s1">&#39;nios2-bsp-generate-files.exe&#39;</span><span class="p">,</span> <span class="s1">&#39;--bsp-dir&#39;</span><span class="p">,</span> <span class="n">ADC_BSP</span><span class="p">,</span> <span class="s1">&#39;--settings&#39;</span><span class="p">,</span> <span class="n">SETTINGS_BSP</span><span class="p">],</span> <span class="n">shell</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Fix PATH problems</span>
+<span class="c1">#fix_path = subprocess.run([WSL, &#39;export&#39;, &#39;WSLENV=PATH/l:${WSLENV}&#39;], shell = True)</span>
+
+<span class="c1"># Build Makefile</span>
+<span class="n">build</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">NIOS2SHELL</span><span class="p">,</span> <span class="s1">&#39;make&#39;</span><span class="p">,</span> <span class="s1">&#39;all&#39;</span><span class="p">,</span> <span class="s1">&#39;-C&#39;</span><span class="p">,</span> <span class="n">WSL_PATH</span> <span class="o">+</span> <span class="n">MAKEFILE</span><span class="p">],</span> <span class="n">shell</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Run</span>
+<span class="n">run</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="n">NIOS2SHELL</span><span class="p">,</span><span class="s1">&#39;nios2-download&#39;</span><span class="p">,</span><span class="s1">&#39;-g&#39;</span><span class="p">,</span> <span class="n">ADC_ELF</span><span class="p">],</span> <span class="n">shell</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="final-code">Final Code</h3>
+<p>I've made some variables in order to create an-easy-to-manage-directory-variable-group, <em>kinda</em>. So the final code looks something like this:</p>
+<script src="https://gist.github.com/nguterresn/9f8d2df685027b63c134b833627d1be7.js"></script></article>
+        
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="nunoguterres" data-show-count="false">Tweet</a>
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        
+      </div>
+    </section>
+
+    <section class="hero is-link">
+      <div class="hero-body">
+        <p class="title">
+          Follow me around the internet ⤵
+        </p>
+        <p class="subtitle">
+          <div class="internet_links">
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/nunognogueira/"
+              >
+                <img
+                  src="../../icons/instagram.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://twitter.com/nunoguterres"
+              >
+                <img
+                  src="../../icons/twitter.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.linkedin.com/in/guterresnogueira/"
+              >
+                <img
+                  src="../../icons/linkedin.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/nguterresn"
+              >
+                <img
+                  src="../../icons/github.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+          </div>
+        </p>
+        <br>
+        <p class="subtitle">
+          <img src="../../icons/nuno.png" alt="" width="80" height="80">
+        </p>
+      </div>
+    </section>
+  </body>
+</html>

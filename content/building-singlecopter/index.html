@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    
+      <meta name="description" content="A place where I write about what I'm doing during the weekend." />
+    
+    
+      <meta name="author" content="Nuno Nogueira" />
+    
+
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://guterresnogueira.com/content/building-singlecopter/">
+    <meta property="twitter:title" content="Building a singlecopter!">
+    <meta property="twitter:image" content="../../favicon/android-chrome-192x192.png">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+
+    <title>
+      Building a singlecopter! - Nuno Nogueira
+    </title>
+
+    <!-- Bulma CSS framework -->
+    <!-- <link href="../../bulma.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="../../style.css" rel="stylesheet" />
+    <link href="../../code_theme.css" rel="stylesheet" />
+
+    <!-- Script to support LaTex -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+    <!-- Import custom script -->
+    <!-- Custom code, enable support for inline LaTex equations -->
+    <script type="text/javascript" src="../../script.js" defer></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G15FQ3N6VZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-G15FQ3N6VZ');
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="container is-max-desktop">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="../..">
+              Nuno Guterres Nogueira
+            </a>
+            <a
+              role="button"
+              class="navbar-burger"
+              aria-label="menu"
+              aria-expanded="false"
+              data-target="navbar_menu"
+            >
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <div class="navbar-menu" id="navbar_menu">
+            <div class="navbar-end">
+               
+              <a
+                class="navbar-item"
+                href="../.."
+              >
+                Home
+              </a>
+              
+              <a
+                class="navbar-item"
+                href="https://m.me/nunoguterresn"
+              >
+                Contact me
+              </a>
+               
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <article class="content"><h1 id="building-a-singlecopter">Building a singlecopter!</h1>
+<h2 id="intro">Intro</h2>
+<p><a href="http://guterresnogueira.com/content/elec/mosfet_motor.html">The search for a good mosfet to use to control a 8520 brushless motor</a> was to use it as the main motor of the <strong>singlecopter</strong> I plan to build. </p>
+<p>I got some good mosfet alternatives, like the IRLZ44N. I'll eventually test it but for now I only have available an IRF530N, which fits perfectly BUT its threshold is a little bit higher (4V) than the suggested 2V. This means that it shall only work with a 5V PWM a not with a 3.3V one - which sucks, regarding the most popular options nowadays being 3.3V (SAMD21, STM32F103...)</p>
+<p>However, I managed to test the PCB and it worked flawless👌 Actually, regarding its excellent behaviour, I could only run the motor at 20% of its power, otherwise I could damage something or harm myself (much fast such wow).</p>
+<h2 id="system">System</h2>
+<p>Now that the motor driver has succeed, it is safe to develop the board and join some components.</p>
+<ol>
+<li><strong>MCU:</strong>  At first, I thought a good choice would be a <strong>STM32F103C8T6</strong>, the same as the BluePill uses. It would facilitate the design and there is a lot of documentation and support for it. BUT there is a shortage of chips and there are none available. Then I tried to go for a more unpopular yet powerful choice - the AVR <strong>SAMD11C14</strong>. Small package and ARM Cortex M0+, why not right? Well, the version available in the supplier was only 14 pins and I need MORE! Final choice will be the <strong>ATSAMD21E15B</strong>-AU, 32 pins seems great.</li>
+<li><strong>MPU6050</strong>: This uses I2c to be controlled. So at least 2 pins of the MCU will be assigned to this module.</li>
+<li><strong>2xServo</strong>: Require 2 PWM pins. Might need a level shifter to increase the 3.3V PWM to 5V levels.</li>
+<li><strong>Motor Driver:</strong> Needs 1 PWM pin.</li>
+</ol>
+<h2 id="design-guidelines-atsamd21">Design Guidelines (<strong>ATSAMD21</strong>)</h2>
+<p>In terms of power:</p>
+<p><img alt="Building%20a%20singlecopter!%201345bcbc26d24b70b26d103aae11a182/Untitled.png" src="../img/Untitled%2B.png" /></p>
+<p>Next to reset pin:</p>
+<p><img alt="Building%20a%20singlecopter!%201345bcbc26d24b70b26d103aae11a182/Untitled%201.png" src="../img/Untitled%2B1.png" /></p>
+<p>Lastly, there is the <strong>USB design guidelines...</strong> Which seems to be up to the user. If you want a cheap board = then no protection. Otherwise, some effort should be put in the design of the board.</p>
+<p>Regarding <a href="https://blog.semtech.com/esd-protection-of-usb-2.0-interfaces">this</a> website:</p>
+<blockquote>
+<p>A transfer of electrostatic energy between the host and peripherals may occur when we plug and unplug USBs. This may lead to an ESD event reaching thresholds of tens of thousands of volts. ESD can lead to damage of the delicate internal circuitry of the host or peripheral transceiver. ESD protection is achieved by placing a transient voltage suppression (TVS) diode between the USB port and the USB controller. Ideally, the TVS diode is placed as closely as possible to the USB port to arrest the transient threat as close as possible to the source.</p>
+</blockquote>
+<p>In this case, it is great to put a <strong>zener diode across the lines of Vbus, D+ and D-:</strong> 5.1V one on the Vbus line and two 3.6V on the data lines.</p>
+<p><img alt="Building%20a%20singlecopter!%201345bcbc26d24b70b26d103aae11a182/Untitled%202.png" src="../img/Untitled%2B2.png" /></p>
+<p>These diodes will prevent voltage above the value on the diode of crossing these lines and damage some connected device.</p>
+<h3 id="what-i-discovered-from-my-research-on-design-guidelines">What I discovered from my research on design guidelines</h3>
+<p>I started search for boards from Adafruit and Sparkfun, which have open source stuff and had their schematics online. I managed to check this one:</p>
+<p><img alt="Building%20a%20singlecopter!%201345bcbc26d24b70b26d103aae11a182/Untitled%203.png" src="../img/Untitled%2B3.png" /></p>
+<p>As is possible to see, there is no big protection on the USB. On Vbus there is a fuse to prevent over current, but there is no absolutely no protection on electrostatic discharge. Weird right? I thought so. I always thought these boards were designed having in mind the most unconscious user, but I guess I was wrong this whole time.</p>
+<p>So, despite all the protections available, it is possible to go <em>raw</em> and forget about that. But me, an intellectual, really need this type of protection, because why not. </p>
+<p>TL:DR you do what you want 😎</p>
+<h2 id="final-pcb">Final PCB</h2>
+<p><img alt="Building%20a%20singlecopter!%201345bcbc26d24b70b26d103aae11a182/Untitled%204.png" src="../img/Untitled%2B4.png" /></p>
+<h2 id="previous-articles">Previous articles</h2>
+<ol>
+<li><a href="http://guterresnogueira.com/content/elec/features_motordriver.html">Testing New Website Features and updating the MOSFET situation</a></li>
+<li><a href="http://guterresnogueira.com/content/elec/mosfet_motor.html">Choosing MOSFET according to motor specifications</a></li>
+</ol></article>
+        
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="nunoguterres" data-show-count="false">Tweet</a>
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        
+      </div>
+    </section>
+
+    <section class="hero is-link">
+      <div class="hero-body">
+        <p class="title">
+          Follow me around the internet ⤵
+        </p>
+        <p class="subtitle">
+          <div class="internet_links">
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/nunognogueira/"
+              >
+                <img
+                  src="../../icons/instagram.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://twitter.com/nunoguterres"
+              >
+                <img
+                  src="../../icons/twitter.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.linkedin.com/in/guterresnogueira/"
+              >
+                <img
+                  src="../../icons/linkedin.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/nguterresn"
+              >
+                <img
+                  src="../../icons/github.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+          </div>
+        </p>
+        <br>
+        <p class="subtitle">
+          <img src="../../icons/nuno.png" alt="" width="80" height="80">
+        </p>
+      </div>
+    </section>
+  </body>
+</html>

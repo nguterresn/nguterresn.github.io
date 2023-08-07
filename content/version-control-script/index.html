@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    
+      <meta name="description" content="A place where I write about what I'm doing during the weekend." />
+    
+    
+      <meta name="author" content="Nuno Nogueira" />
+    
+
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://guterresnogueira.com/content/version-control-script/">
+    <meta property="twitter:title" content="How to create a directory generator with Python for your ideas">
+    <meta property="twitter:image" content="../../favicon/android-chrome-192x192.png">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+
+    <title>
+      How to create a directory generator with Python for your ideas - Nuno Nogueira
+    </title>
+
+    <!-- Bulma CSS framework -->
+    <!-- <link href="../../bulma.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="../../style.css" rel="stylesheet" />
+    <link href="../../code_theme.css" rel="stylesheet" />
+
+    <!-- Script to support LaTex -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+    <!-- Import custom script -->
+    <!-- Custom code, enable support for inline LaTex equations -->
+    <script type="text/javascript" src="../../script.js" defer></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G15FQ3N6VZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-G15FQ3N6VZ');
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="container is-max-desktop">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="../..">
+              Nuno Guterres Nogueira
+            </a>
+            <a
+              role="button"
+              class="navbar-burger"
+              aria-label="menu"
+              aria-expanded="false"
+              data-target="navbar_menu"
+            >
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <div class="navbar-menu" id="navbar_menu">
+            <div class="navbar-end">
+               
+              <a
+                class="navbar-item"
+                href="../.."
+              >
+                Home
+              </a>
+              
+              <a
+                class="navbar-item"
+                href="https://m.me/nunoguterresn"
+              >
+                Contact me
+              </a>
+               
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <article class="content"><h1 id="how-to-create-a-directory-generator-with-python-for-your-ideas">How to create a directory generator with Python for your ideas</h1>
+<p>Ever since I remember, I've always struggle with the fact that I couldn't manage very well my own ideas. The version control was there on the code files, but not on the others, like 3d design files or gerber files. This mess results in outdated files, while others were updated since the start. I would end up with an updated firmware with an outdated pcb, causing friction between my brain cells 🤧</p>
+<p>So I came up with a <em>solution.</em> So simple but yet so useful - create a folder with multiple folders meant to store information about the field.</p>
+<p><img alt="Improving%20productivity%20and%20version%20control%20with%20a%20%203a1067a929104379a4f8e45cc48213de/dir.png" src="../img/dir.png" /></p>
+<p>Four folders, each one with a different use.</p>
+<p>The <strong>Firmware</strong> is stored in a folder where the PlatformIO will create the project code.</p>
+<p>The <strong>pcb</strong> is where the KiCad project is going to be, and even has three others folder to store the <strong>bill of materials</strong> in html (seen in the previous post), images of the pcb in <strong>svg</strong> and a final <strong>gerber</strong>, ready to be orderer!</p>
+<p>To store the Fusion360 project files or Cura <code>.gcode</code> files, the <strong>stl</strong> folder is there to fulfill this need.</p>
+<p>Finally, the .git is where the control version is done and stored 😉</p>
+<p>Now, to do this I used Python. Easy and simple as usual.</p>
+<p>Since I tend to use both operation systems, windows and MacOS, the code is adapted to both.</p>
+<script src="https://gist.github.com/nguterresn/644697d7a3aa20a63a6f996572efa706.js"></script>
+
+<p>The code seems to work pretty great and it is fast as well.</p>
+<h1 id="how-to-create-a-directory-generator-with-python-for-your-ideas-v02">How to create a directory generator with Python for your ideas v0.2</h1>
+<p>Last post was about using a directory generator kind of thing. So I thought about making it more user friendly and recently I saw <strong>tkinter</strong> which is a lib that creates a GUI for Python 🖥️</p>
+<p>The requirements were the following:</p>
+<ol>
+<li>Choose save directory and print text</li>
+<li>Choose directory name from an input text</li>
+<li>Create <a href="http://readme.md">README.md</a> files for each folder.</li>
+<li>Generate directory</li>
+<li>Print some debug stuff</li>
+</ol>
+<p>First of all, <strong>tkinter</strong> is super easy to use. Python 3.9.2 does not come with it, but it is only required one single line to install it.</p>
+<p>The import of <code>filedialog</code> enables the user to choose the save path directory. This event is triggered by a button.</p>
+<p>Afterwards, the last button, the "Generate" one, triggers the creation of the desired directories. The <a href="http://readme.me">README.me</a> can be edited inside the python code.  Regarding <code>createFile(path, readme content)</code> it is possible to create a README.me and edit as this:</p>
+<div class="highlight"><pre><span></span><code><span class="n">createFile</span><span class="p">(</span><span class="n">direc</span><span class="p">,</span> <span class="s2">&quot;This is the main README of the project. &quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>A <strong>default directory path</strong> is set to facilitate the use of this application, but the same can be changed in:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">## DEFAULT DIRECTORY</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;/Users/nunonogueira/Documents/&#39;</span><span class="p">)</span>
+</code></pre></div>
+<p>The final result has been tested in macOS 11.2.3 and not yet in Windows... But I'll test it soon!</p>
+<p><img alt="%5BUPDATE%5D%20Improving%20productivity%20and%20version%20contro%20e547aea5f44f48f4bf7e6da689097cf8/Captura_de_ecra_2021-03-28_as_19.47.50.png" src="../img/Captura_de_ecra_2021-03-28_as_19.47.50.png" /></p>
+<p>Finally, here the code I used:</p>
+<script src="https://gist.github.com/nguterresn/7ca2594c0af92b677616544ec22ace5f.js"></script></article>
+        
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="nunoguterres" data-show-count="false">Tweet</a>
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        
+      </div>
+    </section>
+
+    <section class="hero is-link">
+      <div class="hero-body">
+        <p class="title">
+          Follow me around the internet ⤵
+        </p>
+        <p class="subtitle">
+          <div class="internet_links">
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/nunognogueira/"
+              >
+                <img
+                  src="../../icons/instagram.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://twitter.com/nunoguterres"
+              >
+                <img
+                  src="../../icons/twitter.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.linkedin.com/in/guterresnogueira/"
+              >
+                <img
+                  src="../../icons/linkedin.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/nguterresn"
+              >
+                <img
+                  src="../../icons/github.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+          </div>
+        </p>
+        <br>
+        <p class="subtitle">
+          <img src="../../icons/nuno.png" alt="" width="80" height="80">
+        </p>
+      </div>
+    </section>
+  </body>
+</html>

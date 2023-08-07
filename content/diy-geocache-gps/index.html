@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    
+      <meta name="description" content="A place where I write about what I'm doing during the weekend." />
+    
+    
+      <meta name="author" content="Nuno Nogueira" />
+    
+
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://guterresnogueira.com/content/diy-geocache-gps/">
+    <meta property="twitter:title" content="DIY and OpenSource GeoCaching GPS">
+    <meta property="twitter:image" content="../../favicon/android-chrome-192x192.png">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+
+    <title>
+      DIY and OpenSource GeoCaching GPS - Nuno Nogueira
+    </title>
+
+    <!-- Bulma CSS framework -->
+    <!-- <link href="../../bulma.min.css" rel="stylesheet" /> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+    <!-- Custom styles for this template -->
+    <link href="../../style.css" rel="stylesheet" />
+    <link href="../../code_theme.css" rel="stylesheet" />
+
+    <!-- Script to support LaTex -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+    <!-- Import custom script -->
+    <!-- Custom code, enable support for inline LaTex equations -->
+    <script type="text/javascript" src="../../script.js" defer></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G15FQ3N6VZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-G15FQ3N6VZ');
+    </script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="container is-max-desktop">
+          <div class="navbar-brand">
+            <a class="navbar-item" href="../..">
+              Nuno Guterres Nogueira
+            </a>
+            <a
+              role="button"
+              class="navbar-burger"
+              aria-label="menu"
+              aria-expanded="false"
+              data-target="navbar_menu"
+            >
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </a>
+          </div>
+
+          <div class="navbar-menu" id="navbar_menu">
+            <div class="navbar-end">
+               
+              <a
+                class="navbar-item"
+                href="../.."
+              >
+                Home
+              </a>
+              
+              <a
+                class="navbar-item"
+                href="https://m.me/nunoguterresn"
+              >
+                Contact me
+              </a>
+               
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="section">
+      <div class="container is-max-desktop">
+        <article class="content"><h1 id="diy-and-opensource-geocaching-gps">DIY and OpenSource GeoCaching GPS</h1>
+<h6>20/11/2020</h6>
+
+<p>I really like <a href="https://www.geocaching.com/play">GeoCache</a> but I have always thought that GPS are super expensive for something that should not cost that much money. Therefore, I came up with the idea to make one myself, trying to give it the maximum features possible that others provide while cutting the costs of the material as much as possible.</p>
+<p>The idea is to create a DIY GeoCaching GPS:</p>
+<ul>
+<li>With significant good measures, less than 5 meters of accuracy.</li>
+<li>Cheap and popular electronic goods</li>
+<li>Powered by a 3.7V LiPo battery.</li>
+<li>Simple to use iOS/Android App but still working without app</li>
+<li>Finally, easy to build</li>
+</ul>
+<hr />
+<h3 id="starting-by-a-first-system-architecture">Starting by a first system architecture</h3>
+<p>In this starting phase, the ESP32 is powered by the serial connection (5V from PC) and powers the OLED panel and the GPS with 3.3V. The ESP32 is the device that draws more current, up to 150mA with Bluetooth active.</p>
+<p><img alt="DIY%20and%20OpenSource%20GeoCaching%20GPS%20dfac69061ad2434894db9099f99aba13/OpenSourceGPS.png" src="../img/OpenSourceGPS.png" /></p>
+<p>The system uses:</p>
+<ul>
+<li>
+<p>A microcontroller, the <a href="https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32d_esp32-wroom-32u_datasheet_en.pdf">ESP32</a>. <a href="https://www.ebay.com/itm/ESP-WROOM-32-ESP32-ESP32S-2-4GHz-WiFi-Bluetooth-Development-Board-for-Arduino/184310896504?hash=item2ae9c91778:g:vIsAAOSwBuVe0lRL">Very cheap and popular</a>, with a lot of flash and RAM compared with alternatives (like <a href="https://www.microchip.com/design-centers/32-bit/pic-32-bit-mcus/pic32mx-family">PIC32</a> or <a href="https://www.ebay.com/itm/STM32F103C8T6-ARM-STM32-Minimum-System-Development-Board-Module-For-Arduino-NEW/192956697201?hash=item2ced1d8a71:g:hhIAAOSw0PBdCvzE">STM32</a>). Besides, it has WiFi, Bluetooth and <a href="https://www.link-labs.com/blog/bluetooth-vs-bluetooth-low-energy">Bluetooth Low-Energy</a>. Perfect for this kind of project. (4€)</p>
+</li>
+<li>
+<p><a href="https://www.u-blox.com/sites/default/files/products/documents/NEO-6_DataSheet_%28GPS.G6-HW-09005%29.pdf">GPS NEO-6M</a>. <a href="https://www.ebay.com/itm/1PCS-GYNEO6MV2-GPS-Module-NEO-6M-GY-NEO6MV2-Board-with-Antenne-fur-Arduino/193082355474?hash=item2cf49aef12:g:nucAAOSwqSRdbjmD">Cheap</a> and very available GPS with a accuracy of 2.5 meters horizontally. (4€)</p>
+</li>
+</ul>
+<p><a href="https://ukhas.org.uk/guides:ublox_psm">UKHAS Wiki</a></p>
+<ul>
+<li><a href="https://www.ebay.com/itm/0-96-IIC-I2C-Serial-128X64-OLED-Blue-LCD-Display-SSD1306-Arduino-ASS/264030264367?hash=item3d796e1c2f:g:aDkAAOSwFAtb5HjA">SSD1306 OLED</a> panel, low current draw and provides a GUI visualization. Useful if App is not installed. (4€)</li>
+<li>Some LEDs to increase user experience (&lt;1€)</li>
+</ul>
+<h3 id="libraries">Libraries</h3>
+<p>Luckily, there is a ton of open source libraries out there to this kind of <em>mcu</em> that really makes the job easier:</p>
+<ul>
+<li>To play with the GPS I used <a href="http://arduiniana.org/libraries/tinygpsplus/">TinyGPS++</a>.</li>
+<li>To manage SSD1306 128x64 through I2C I used Adafruit libraries - <a href="https://github.com/adafruit/Adafruit_SSD1306">SSD1306</a>, BusIO and GFX Library.</li>
+<li>To deal with serial ports I used <a href="https://github.com/espressif/arduino-esp32/blob/master/cores/esp32/HardwareSerial.cpp">HardwareSerial</a>.</li>
+<li>To use BLE I got the <a href="https://github.com/espressif/arduino-esp32/tree/master/libraries/BLE">ESP32 BLE for Arduino</a> libraries</li>
+</ul>
+<h3 id="loop">Loop</h3>
+<p>In order to work, this system needs to follow some sequential loop logic.</p>
+<ol>
+<li>Reads GPS coordinates</li>
+<li>Measures distance between desired coordinates and actual coordinates</li>
+<li>Returns measured distance to OLED panel or app</li>
+</ol>
+<p>The desired coordinates are received through BLE.</p>
+<p><img alt="DIY%20and%20OpenSource%20GeoCaching%20GPS%20dfac69061ad2434894db9099f99aba13/firstarch_gps.png" src="../img/firstarch_gps.png" /></p>
+<p>From the above flowchart it's possible to see 2 two main loops responsible for the behavior of the system. GPS gets values, verifies it and updates current coordinates with new ones. Following, a device is connected through BLE and sends the desired destination coordinates, ending with a measured distance function executed inside the ESP32.</p>
+<h1 id="diy-and-opensource-geocaching-gps-v02">DIY and OpenSource GeoCaching GPS v0.2</h1>
+<h6>03/12/2020</h6>
+
+<p>When the first results were out I could see that I had failed in what I once had assigned.</p>
+<p>The first prototype worked fine and, in the end, had a great result - it worked. Even only using longitude and latitude, the distance between two coordinates was fine and acceptable. Thing is, even if the prototype works, I can not call it a product without having a great user experience or a purpose.</p>
+<p>Bluetooth connection was fine, even though it drained a lot of current (150mA). But, what if the phone controlling the coordinates to send reaches 0% battery? The board becomes useless. So even if the software and the hardware is top-notch, it fails on delivering a reliable user-experience.</p>
+<p>To prevent this from happen I created a second version board which allows the user to manually input coordinates, change it or delete it. Also, in case the user doesn't want to use the phone, it is possible to disable Bluetooth by a switch.</p>
+<p><img alt="DIY%20and%20OpenSource%20GeoCaching%20GPS%20v0%202%20b486c3beb5854dd99f2cb49988b1d4e5/Captura_de_ecra_2020-11-15_as_14.02.51.png" src="../img/Captura_de_ecra_2020-11-15_as_14.02.51.png" /></p>
+<p>Some minor improvements:</p>
+<ul>
+<li>Every button has a LED connected in parallel, therefore, each time a button is clicked a LED blinks.</li>
+<li>The input 5V pads were changed to screw terminals, more stable.</li>
+</ul>
+<h1 id="diy-and-opensource-geocaching-gps-v03">DIY and OpenSource GeoCaching GPS v0.3</h1>
+<h6>17/04/2021</h6>
+
+<p>Although last version (v0.2) already fulfilled a lot of use cases, I completely forgot about the number 0... 🤯 Making it useless to use, only useful to test. Also, the last version was using a pin per button (14 in total), which is something very newbie in electronics. This time, I decided to use a <strong>4x4 matrix keyboard</strong>, using only 8 pins to 16 buttons.</p>
+<p>Each button has a RC filter, decreasing (by far) the chance of switch debouncing. Some buttons can debounce up to 20ms, so the challenge was to find a RC duo (R*C) with a time constant, at least, 4 times less. This value allows the capacitor to charge/discharge while debounce errors could occur. A value 4 times less of 20ms is 5ms, and using a 0.1uF capacitor, the resistance is about 50k ohms.</p>
+<p>
+<script type="math/tex; mode=display">\tau = RC</script>
+</p>
+<p>This value is fine because a capacitor is 98% charged at 4$\tau$, so we can assume the logic is HIGH or LOW at that point ($t = 4\tau$).</p>
+<p>This whole project is already fits in <a href="../version-control-script/">my new directory structure which I stated in the last post</a>.</p>
+<p>Regarding all the information above, here is the Github repository link to this project:</p>
+<p>🖥 <a href="https://github.com/nguterresn/esp32gps_geocache">nguterresn/esp32gps_geocache</a></p></article>
+        
+          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="nunoguterres" data-show-count="false">Tweet</a>
+          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        
+      </div>
+    </section>
+
+    <section class="hero is-link">
+      <div class="hero-body">
+        <p class="title">
+          Follow me around the internet ⤵
+        </p>
+        <p class="subtitle">
+          <div class="internet_links">
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/nunognogueira/"
+              >
+                <img
+                  src="../../icons/instagram.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://twitter.com/nunoguterres"
+              >
+                <img
+                  src="../../icons/twitter.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.linkedin.com/in/guterresnogueira/"
+              >
+                <img
+                  src="../../icons/linkedin.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+            <div class="icon">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/nguterresn"
+              >
+                <img
+                  src="../../icons/github.svg"
+                  alt=""
+                  width="30"
+                  height="30"
+                />
+              </a>
+            </div>
+          </div>
+        </p>
+        <br>
+        <p class="subtitle">
+          <img src="../../icons/nuno.png" alt="" width="80" height="80">
+        </p>
+      </div>
+    </section>
+  </body>
+</html>
