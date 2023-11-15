@@ -109,13 +109,13 @@
 <p>SPI signal is <strong>delayed through the Level Shift</strong> but it is fixed in the PLL.</p>
 <hr />
 <p><strong>This is the code</strong> I've used for reading the ADC values and measuring the time between readings.</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;io.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/alt_alarm.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/alt_timestamp.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;system.h&quot;</span><span class="cp"></span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;altera_avalon_pio_regs.h&quot;</span><span class="cp"></span>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;io.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/alt_alarm.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sys/alt_timestamp.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;system.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;altera_avalon_pio_regs.h&quot;</span>
 
 <span class="cp">#define MILI 1000</span>
 <span class="cp">#define MICRO 1000000</span>
@@ -128,84 +128,84 @@
 <span class="cp">#define READ_REG_MEASURE_DONE 0</span>
 <span class="cp">#define READ_REG_ADC_VALUE 1</span>
 
-<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">time1</span><span class="p">;</span><span class="w"></span>
-<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">time2</span><span class="p">;</span><span class="w"></span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">time1</span><span class="p">;</span>
+<span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">time2</span><span class="p">;</span>
 
-<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
 
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ch</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">ch</span><span class="p">;</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">nReadNum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1024</span><span class="p">;</span><span class="w"> </span><span class="c1">// max 1024</span>
-<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="p">,</span><span class="w"> </span><span class="n">nIndex</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="p">,</span><span class="w"> </span><span class="n">nIndex</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
 
-<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;ADC Test</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;ADC Test</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
 
-<span class="w">    </span><span class="kt">FILE</span><span class="o">*</span><span class="w"> </span><span class="n">fp</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;/dev/uart_0&quot;</span><span class="p">,</span><span class="s">&quot;r++&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="kt">FILE</span><span class="o">*</span><span class="w"> </span><span class="n">fp</span><span class="p">;</span>
+<span class="w">    </span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">&quot;/dev/uart_0&quot;</span><span class="p">,</span><span class="s">&quot;r++&quot;</span><span class="p">);</span>
 
-<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;fp opens!</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="k">else</span><span class="w"></span>
-<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error opening the UART!&quot;</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;fp opens!</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error opening the UART!&quot;</span><span class="p">);</span>
 
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">alt_timestamp_start</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
-<span class="w">    </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">printf</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;No timestamp device available</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">time1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alt_timestamp</span><span class="p">();</span><span class="w"></span>
-<span class="w">        </span><span class="n">usleep</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="n">time2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alt_timestamp</span><span class="p">();</span><span class="w"></span>
-<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="p">)(</span><span class="n">time2</span><span class="o">-</span><span class="n">time1</span><span class="p">)</span><span class="o">/</span><span class="n">alt_timestamp_freq</span><span class="p">();</span><span class="w"></span>
-<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Measurement time: %f at frequency of %u</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">alt_timestamp_freq</span><span class="p">());</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">alt_timestamp_start</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;No timestamp device available</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">time1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alt_timestamp</span><span class="p">();</span>
+<span class="w">        </span><span class="n">usleep</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span>
+<span class="w">        </span><span class="n">time2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alt_timestamp</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="p">)(</span><span class="n">time2</span><span class="o">-</span><span class="n">time1</span><span class="p">)</span><span class="o">/</span><span class="n">alt_timestamp_freq</span><span class="p">();</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Measurement time: %f at frequency of %u</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">alt_timestamp_freq</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
 
-<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
 
 <span class="w">        </span><span class="c1">//Read adc channel from switch value</span>
-<span class="w">        </span><span class="n">ch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IORD_ALTERA_AVALON_PIO_DATA</span><span class="p">(</span><span class="n">SW_BASE</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x0F</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">ch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IORD_ALTERA_AVALON_PIO_DATA</span><span class="p">(</span><span class="n">SW_BASE</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x0F</span><span class="p">;</span>
 
-<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;======================= %d, ch=%d</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">nIndex</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ch</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;======================= %d, ch=%d</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">nIndex</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">ch</span><span class="p">);</span>
 
 <span class="w">        </span><span class="c1">//Set measure number for ADC to convert</span>
 <span class="w">        </span><span class="c1">//This write is done with 4 bytes offset</span>
 <span class="w">        </span><span class="c1">//#define ADC_LTC2308_0_BASE 0x41020 + 0x04(1word 32 bit) = 0x41024</span>
-<span class="w">        </span><span class="n">IOWR</span><span class="p">(</span><span class="n">ADC_LTC2308_0_BASE</span><span class="p">,</span><span class="w"> </span><span class="n">WRITE_REG_MEASURE_NUM</span><span class="p">,</span><span class="w"> </span><span class="n">nReadNum</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">IOWR</span><span class="p">(</span><span class="n">ADC_LTC2308_0_BASE</span><span class="p">,</span><span class="w"> </span><span class="n">WRITE_REG_MEASURE_NUM</span><span class="p">,</span><span class="w"> </span><span class="n">nReadNum</span><span class="p">);</span>
 
 <span class="w">        </span><span class="c1">//Start measure</span>
 <span class="w">        </span><span class="c1">//Writes 1 into base address</span>
 <span class="w">        </span><span class="c1">//#define ADC_LTC2308_0_BASE 0x41020</span>
-<span class="w">        </span><span class="n">IOWR</span><span class="p">(</span><span class="n">ADC_LTC2308_0_BASE</span><span class="p">,</span><span class="w"> </span><span class="n">WRITE_REG_START_CH</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">ch</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mh">0x00</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="n">IOWR</span><span class="p">(</span><span class="n">ADC_LTC2308_0_BASE</span><span class="p">,</span><span class="w"> </span><span class="n">WRITE_REG_START_CH</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">ch</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mh">0x01</span><span class="p">);</span><span class="w"></span>
-<span class="w">        </span><span class="n">IOWR</span><span class="p">(</span><span class="n">ADC_LTC2308_0_BASE</span><span class="p">,</span><span class="w"> </span><span class="n">WRITE_REG_START_CH</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">ch</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mh">0x00</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="n">IOWR</span><span class="p">(</span><span class="n">ADC_LTC2308_0_BASE</span><span class="p">,</span><span class="w"> </span><span class="n">WRITE_REG_START_CH</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">ch</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mh">0x00</span><span class="p">);</span>
+<span class="w">        </span><span class="n">IOWR</span><span class="p">(</span><span class="n">ADC_LTC2308_0_BASE</span><span class="p">,</span><span class="w"> </span><span class="n">WRITE_REG_START_CH</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">ch</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mh">0x01</span><span class="p">);</span>
+<span class="w">        </span><span class="n">IOWR</span><span class="p">(</span><span class="n">ADC_LTC2308_0_BASE</span><span class="p">,</span><span class="w"> </span><span class="n">WRITE_REG_START_CH</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">ch</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mh">0x00</span><span class="p">);</span>
 
 <span class="w">        </span><span class="c1">//starts timer</span>
-<span class="w">        </span><span class="n">time1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alt_timestamp</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="n">time1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alt_timestamp</span><span class="p">();</span>
 <span class="w">        </span><span class="c1">// wait measure done</span>
 <span class="w">        </span><span class="c1">// wait until it receives a one</span>
-<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">IORD</span><span class="p">(</span><span class="n">ADC_LTC2308_0_BASE</span><span class="p">,</span><span class="w"> </span><span class="n">READ_REG_MEASURE_DONE</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x01</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0x00</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">IORD</span><span class="p">(</span><span class="n">ADC_LTC2308_0_BASE</span><span class="p">,</span><span class="w"> </span><span class="n">READ_REG_MEASURE_DONE</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x01</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0x00</span><span class="p">);</span>
 
-<span class="w">        </span><span class="n">time2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alt_timestamp</span><span class="p">();</span><span class="w"></span>
-<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="p">)(</span><span class="n">time2</span><span class="o">-</span><span class="n">time1</span><span class="p">)</span><span class="o">/</span><span class="n">alt_timestamp_freq</span><span class="p">();</span><span class="w"></span>
+<span class="w">        </span><span class="n">time2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">alt_timestamp</span><span class="p">();</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="p">)(</span><span class="n">time2</span><span class="o">-</span><span class="n">time1</span><span class="p">)</span><span class="o">/</span><span class="n">alt_timestamp_freq</span><span class="p">();</span>
 
 <span class="w">        </span><span class="c1">//Change MILI or MICRO</span>
-<span class="w">        </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">MICRO</span><span class="p">;</span><span class="w"></span>
-<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Measurement time: %f at frequency of %u</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">alt_timestamp_freq</span><span class="p">());</span><span class="w"></span>
+<span class="w">        </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">MICRO</span><span class="p">;</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Measurement time: %f at frequency of %u</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">alt_timestamp_freq</span><span class="p">());</span>
 
 <span class="w">        </span><span class="c1">//From -&gt; IOWR(ADC_LTC2308_0_BASE, WRITE_REG_MEASURE_NUM, nReadNum);</span>
 <span class="w">        </span><span class="c1">//ADC measures are stored in a FIFO nReadNum times</span>
-<span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nReadNum</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="n">Value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IORD</span><span class="p">(</span><span class="n">ADC_LTC2308_0_BASE</span><span class="p">,</span><span class="w"> </span><span class="n">READ_REG_ADC_VALUE</span><span class="p">);</span><span class="w"></span>
-<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;CH%d=%.2fV (%d)</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ch</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">Value</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nReadNum</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="n">Value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IORD</span><span class="p">(</span><span class="n">ADC_LTC2308_0_BASE</span><span class="p">,</span><span class="w"> </span><span class="n">READ_REG_ADC_VALUE</span><span class="p">);</span>
+<span class="w">            </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;CH%d=%.2fV (%d)</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ch</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">Value</span><span class="o">/</span><span class="mf">1000.0</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="p">);</span>
 <span class="w">            </span><span class="c1">//fprintf(fp,&quot;CH%d=%.2fV (%d)\r\n&quot;, ch, (float)Value/1000.0, Value);</span>
-<span class="w">            </span><span class="n">fprintf</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span><span class="s">&quot;%d</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="p">);</span><span class="w"></span>
-<span class="w">            </span><span class="n">IOWR_ALTERA_AVALON_PIO_DATA</span><span class="p">(</span><span class="n">LED_R_BASE</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">Value</span><span class="o">/</span><span class="mi">500</span><span class="p">));</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="n">fprintf</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span><span class="s">&quot;%d</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Value</span><span class="p">);</span>
+<span class="w">            </span><span class="n">IOWR_ALTERA_AVALON_PIO_DATA</span><span class="p">(</span><span class="n">LED_R_BASE</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">Value</span><span class="o">/</span><span class="mi">500</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
 
-<span class="w">        </span><span class="n">usleep</span><span class="p">(</span><span class="mi">1000</span><span class="o">*</span><span class="mi">1000</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="n">usleep</span><span class="p">(</span><span class="mi">1000</span><span class="o">*</span><span class="mi">1000</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
 
-<span class="p">}</span><span class="w"></span>
+<span class="p">}</span>
 </code></pre></div>
 <p>Is worth mentioning that, in order to use the <strong>alt_timestamp</strong> it is necessary to add a Timer Interval IP core to the system in the <strong>Platform Designer</strong>. Choose a high timeout time so it doesn't interrupt much while CPU is executing (e.g. 1s).</p>
 <p>Also, when <strong>alt_timestamp</strong> is initiated, a second is measured and its normal that a second using <strong>usleep()</strong> is higher than the actual time passing. The <strong>usleep()</strong> function guarantees that the delay happens but does not guarantee that the delay is not higher than it was supposed to be.</p></article>

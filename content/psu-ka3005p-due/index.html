@@ -104,34 +104,34 @@ The Arduino Due supports USB host capabilities. It is not possible to use other 
 <p>The <a href="https://github.com/felis/USB_Host_Shield_2.0">USB Host Shield 2.0</a> is a very interesting project and was from where I took all the code I needed to make this project happen. My library is basically a modified <a href="https://en.wikipedia.org/wiki/USB_communications_device_class">USB CDC</a> library and a wrapper with all the commands that the power supply expects.</p>
 <p>I've used a software on a computer to read and identify the USB characteristics comming from the power supply. This gave me the information I needed to change the <em>ConfigDescParser</em> method (inside <em>cdc.cpp</em>) and add the const <code>USB_CLASS_CDC_DATA</code> as part of it.</p>
 <p>Here is an example on how to use the library:</p>
-<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;psu.h&quot;</span><span class="cp"></span>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;psu.h&quot;</span>
 
 <span class="c1">// #define USE_SERIAL</span>
 
 <span class="cp">#ifdef USE_SERIAL</span>
-<span class="n">PSU</span><span class="w"> </span><span class="n">psu</span><span class="p">;</span><span class="w"></span>
+<span class="n">PSU</span><span class="w"> </span><span class="n">psu</span><span class="p">;</span>
 <span class="cp">#else</span>
-<span class="n">PSU</span><span class="w"> </span><span class="nf">psu</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Serial</span><span class="p">);</span><span class="w"></span>
+<span class="n">PSU</span><span class="w"> </span><span class="nf">psu</span><span class="p">(</span><span class="o">&amp;</span><span class="n">Serial</span><span class="p">);</span>
 <span class="cp">#endif</span>
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">cpu_irq_enable</span><span class="p">();</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">cpu_irq_enable</span><span class="p">();</span>
+<span class="p">}</span>
 
-<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"></span>
-<span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">psu</span><span class="p">.</span><span class="n">task</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">usb_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">psu</span><span class="p">.</span><span class="n">getUsbTaskState</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">usb_state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">USB_DETACHED_SUBSTATE_WAIT_FOR_DEVICE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">psu</span><span class="p">.</span><span class="n">task</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">usb_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">psu</span><span class="p">.</span><span class="n">getUsbTaskState</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">usb_state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">USB_DETACHED_SUBSTATE_WAIT_FOR_DEVICE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// ka3005p not connected.</span>
-<span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">usb_state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">USB_STATE_RUNNING</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">usb_state</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">USB_STATE_RUNNING</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">// USB Enumeration is done, do something.</span>
-<span class="w">        </span><span class="n">psu</span><span class="p">.</span><span class="n">setCurrent</span><span class="p">(</span><span class="n">CHANNEL_1</span><span class="p">,</span><span class="w"> </span><span class="mf">2.00</span><span class="p">);</span><span class="w"></span>
-<span class="w">    </span><span class="p">}</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="n">psu</span><span class="p">.</span><span class="n">setCurrent</span><span class="p">(</span><span class="n">CHANNEL_1</span><span class="p">,</span><span class="w"> </span><span class="mf">2.00</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>If your using platformIO, check the settings you need to add <a href="https://github.com/nguterresn/due-ka3005p/blob/master/platformio.ini">here</a>.</p></article>
         

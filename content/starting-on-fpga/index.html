@@ -116,26 +116,26 @@
 <h3 id="pin-planner-and-first-modules">Pin Planner and First Modules</h3>
 <p>As I finished the tutorials I started playing around with the FPGA, trying to create some logic design and program it to the FPGA. From the <a href="https://software.intel.com/content/www/us/en/develop/articles/how-to-program-your-first-fpga-device.html">How to Program Your First FPGA Device</a> I copied the template and made this simple blink code that uses a 32-bit counter, a switch and 2 Leds:</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// create module</span>
-<span class="k">module</span> <span class="n">blink</span> <span class="p">(</span>
-    <span class="k">input</span> <span class="kt">wire</span> <span class="n">clk</span><span class="p">,</span> <span class="c1">// 50MHz input clock</span>
-    <span class="k">input</span> <span class="kt">wire</span> <span class="n">switch</span><span class="p">,</span>
-    <span class="k">output</span> <span class="kt">wire</span> <span class="p">[</span><span class="mh">1</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">LED</span> <span class="c1">// LED ouput</span>
+<span class="k">module</span><span class="w"> </span><span class="n">blink</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="kt">wire</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span><span class="w"> </span><span class="c1">// 50MHz input clock</span>
+<span class="w">    </span><span class="k">input</span><span class="w"> </span><span class="kt">wire</span><span class="w"> </span><span class="n">switch</span><span class="p">,</span>
+<span class="w">    </span><span class="k">output</span><span class="w"> </span><span class="kt">wire</span><span class="w"> </span><span class="p">[</span><span class="mh">1</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">LED</span><span class="w"> </span><span class="c1">// LED ouput</span>
 <span class="p">);</span>
 
 <span class="c1">// create a binary counter</span>
-<span class="kt">reg</span> <span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span> <span class="n">cnt</span><span class="p">;</span> <span class="c1">// 32-bit counter</span>
+<span class="kt">reg</span><span class="w"> </span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="n">cnt</span><span class="p">;</span><span class="w"> </span><span class="c1">// 32-bit counter</span>
 
-<span class="k">initial</span> <span class="k">begin</span>
-  <span class="n">cnt</span> <span class="o">&lt;=</span> <span class="mh">32&#39;h00000000</span><span class="p">;</span> <span class="c1">// start at zero</span>
+<span class="k">initial</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">  </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mh">32&#39;h00000000</span><span class="p">;</span><span class="w"> </span><span class="c1">// start at zero</span>
 <span class="k">end</span>
 
-<span class="k">always</span> <span class="p">@(</span><span class="k">posedge</span> <span class="n">clk</span><span class="p">)</span> <span class="k">begin</span>
-    <span class="n">cnt</span> <span class="o">&lt;=</span> <span class="n">cnt</span> <span class="o">+</span> <span class="mh">1</span><span class="p">;</span> <span class="c1">// count up</span>
+<span class="k">always</span><span class="w"> </span><span class="p">@(</span><span class="k">posedge</span><span class="w"> </span><span class="n">clk</span><span class="p">)</span><span class="w"> </span><span class="k">begin</span>
+<span class="w">    </span><span class="n">cnt</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cnt</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// count up</span>
 <span class="k">end</span>
 
 <span class="c1">//assign LED to 25th bit of the counter to blink the LED at a few Hz</span>
-<span class="k">assign</span> <span class="n">LED</span><span class="p">[</span><span class="mh">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">switch</span> <span class="o">?</span> <span class="n">cnt</span><span class="p">[</span><span class="mh">25</span><span class="p">]</span> <span class="o">:</span> <span class="n">cnt</span><span class="p">[</span><span class="mh">22</span><span class="p">];</span>
-<span class="k">assign</span> <span class="n">LED</span><span class="p">[</span><span class="mh">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">switch</span> <span class="o">?</span> <span class="n">cnt</span><span class="p">[</span><span class="mh">22</span><span class="p">]</span> <span class="o">:</span> <span class="n">cnt</span><span class="p">[</span><span class="mh">25</span><span class="p">];</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">LED</span><span class="p">[</span><span class="mh">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">switch</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">cnt</span><span class="p">[</span><span class="mh">25</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cnt</span><span class="p">[</span><span class="mh">22</span><span class="p">];</span>
+<span class="k">assign</span><span class="w"> </span><span class="n">LED</span><span class="p">[</span><span class="mh">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">switch</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">cnt</span><span class="p">[</span><span class="mh">22</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">cnt</span><span class="p">[</span><span class="mh">25</span><span class="p">];</span>
 
 <span class="k">endmodule</span>
 </code></pre></div>
