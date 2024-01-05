@@ -1,104 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1"
-    />
-    
-      <meta name="description" content="A place where I write about what I'm doing during the weekend." />
-    
-    
-      <meta name="author" content="Nuno Nogueira" />
-    
 
-    <meta property="twitter:card" content="summary">
-    <meta property="twitter:url" content="https://guterresnogueira.com/">
-    <meta property="twitter:title" content="Home">
-    <meta property="twitter:image" content="favicon/android-chrome-192x192.png">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <meta name="description" content="A place where I write about what I'm doing during the weekend." />
+  
+  
+  <meta name="author" content="Nuno Nogueira" />
+  
 
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:url" content="https://guterresnogueira.com/">
+  <meta property="twitter:title" content="Home">
+  <meta property="twitter:image" content="favicon/android-chrome-192x192.png">
 
-    <title>
-      Home - Nuno Nogueira
-    </title>
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
 
-    <!-- Bulma CSS framework -->
-    <!-- <link href="bulma.min.css" rel="stylesheet" /> -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <title>
+    Home - Nuno Nogueira
+  </title>
 
-    <!-- Custom styles for this template -->
-    <link href="style.css" rel="stylesheet" />
-    <link href="code_theme.css" rel="stylesheet" />
+  <!-- Bulma CSS framework -->
+  <!-- <link href="bulma.min.css" rel="stylesheet" /> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 
-    <!-- Script to support LaTex -->
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
-    <!-- Import custom script -->
-    <!-- Custom code, enable support for inline LaTex equations -->
-    <script type="text/javascript" src="script.js" defer></script>
+  <!-- Custom styles for this template -->
+  <link href="style.css" rel="stylesheet" />
+  <link href="code_theme.css" rel="stylesheet" />
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G15FQ3N6VZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <!-- Script to support LaTex -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+  <!-- Import custom script -->
+  <!-- Custom code, enable support for inline LaTex equations -->
+  <script type="text/javascript" src="script.js" defer></script>
 
-      gtag('config', 'G-G15FQ3N6VZ');
-    </script>
-  </head>
-  <body>
-    <header>
-      <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="container is-max-desktop">
-          <div class="navbar-brand">
-            <a class="navbar-item" href=".">
-              Nuno Guterres Nogueira
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G15FQ3N6VZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-G15FQ3N6VZ');
+  </script>
+
+  <!-- Disqus Chat -->
+  <script>
+    var PAGE_URL = 'https://guterresnogueira.com/';
+    var PAGE_IDENTIFIER = '/';
+
+    var disqus_config = function () {
+      this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://nguterresn.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="container is-max-desktop">
+        <div class="navbar-brand">
+          <a class="navbar-item" href=".">
+            Nuno Guterres Nogueira
+          </a>
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar_menu">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <div class="navbar-menu" id="navbar_menu">
+          <div class="navbar-end">
+             
+            <a class="navbar-item active" href=".">
+              Home
             </a>
-            <a
-              role="button"
-              class="navbar-burger"
-              aria-label="menu"
-              aria-expanded="false"
-              data-target="navbar_menu"
-            >
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
+            
+            <a class="navbar-item" href="https://m.me/nunoguterresn">
+              Contact me
             </a>
-          </div>
-
-          <div class="navbar-menu" id="navbar_menu">
-            <div class="navbar-end">
-               
-              <a
-                class="navbar-item active"
-                href="."
-              >
-                Home
-              </a>
-              
-              <a
-                class="navbar-item"
-                href="https://m.me/nunoguterresn"
-              >
-                Contact me
-              </a>
-               
-            </div>
+             
           </div>
         </div>
-      </nav>
-    </header>
+      </div>
+    </nav>
+  </header>
 
-    <section class="section">
-      <div class="container is-max-desktop">
-        <article class="content"><h1 id="what-im-doing-in-the-weekend">What I'm doing in the weekend...</h1>
+  <section class="section">
+    <div class="container is-max-desktop">
+      <article class="content">
+        <h1 id="what-im-doing-in-the-weekend">What I'm doing in the weekend...</h1>
 <hr />
+<h3 id="on-2024">On 2024</h3>
+<h4 id="how-to-simulate-lgvl-using-sdl2-on-vscode-macos-cmakelgvl"><a href="content/lgvl-simulator-vscode-macos/"><strong>How to simulate LGVL using SDL2 on VSCode (MacOS)</strong></a> <span class="tag is-light is-rounded">CMake</span><span class="tag is-light is-rounded">LGVL</span></h4>
 <h3 id="on-2023">On 2023</h3>
 <h4 id="the-basics-of-cmake-cmake"><a href="content/cmake/cmake/"><strong>The basics of CMake</strong></a> <span class="tag is-light is-rounded">CMake</span></h4>
 <h4 id="control-the-ka3005p-power-supply-with-an-arduino-due-arduino"><a href="content/psu-ka3005p-due/"><strong>Control the ka3005p power supply with an Arduino Due</strong></a> <span class="tag is-light is-rounded">Arduino</span></h4>
@@ -131,81 +139,49 @@
 <h4 id="fpga-and-avalon-interfaces-fpga"><a href="content/fpga-and-avalon-interfaces/"><strong>FPGA and Avalon Interfaces</strong></a> <span class="tag is-light is-rounded">FPGA</span></h4>
 <h4 id="starting-on-fpga-fpga"><a href="content/starting-on-fpga/"><strong>Starting on FPGA...</strong></a> <span class="tag is-light is-rounded">FPGA</span></h4>
 <h4 id="some-useful-vs-code-extensions-useful-tools"><a href="http://archive.guterresnogueira.com/content/usefultools/i.html"><strong>Some useful VS Code Extensions</strong></a> <span class="tag is-light is-rounded">Useful tools</span></h4>
-<h4 id="about-this-website-personal-notes"><a href="http://archive.guterresnogueira.com/content/aboutme.html"><strong>About this website</strong></a> <span class="tag is-light is-rounded">Personal notes</span></h4></article>
-        
-      </div>
-    </section>
+<h4 id="about-this-website-personal-notes"><a href="http://archive.guterresnogueira.com/content/aboutme.html"><strong>About this website</strong></a> <span class="tag is-light is-rounded">Personal notes</span></h4>
+      </article>
+      
+      <br>
+      <div id="disqus_thread"></div>
+    </div>
+  </section>
 
-    <section class="hero is-link">
-      <div class="hero-body">
-        <p class="title">
-          Follow me around the internet ⤵
-        </p>
-        <p class="subtitle">
-          <div class="internet_links">
-            <div class="icon">
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://www.instagram.com/nunognogueira/"
-              >
-                <img
-                  src="../../icons/instagram.svg"
-                  alt=""
-                  width="30"
-                  height="30"
-                />
-              </a>
-            </div>
-            <div class="icon">
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://twitter.com/nunoguterres"
-              >
-                <img
-                  src="../../icons/twitter.svg"
-                  alt=""
-                  width="30"
-                  height="30"
-                />
-              </a>
-            </div>
-            <div class="icon">
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://www.linkedin.com/in/guterresnogueira/"
-              >
-                <img
-                  src="../../icons/linkedin.svg"
-                  alt=""
-                  width="30"
-                  height="30"
-                />
-              </a>
-            </div>
-            <div class="icon">
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://github.com/nguterresn"
-              >
-                <img
-                  src="../../icons/github.svg"
-                  alt=""
-                  width="30"
-                  height="30"
-                />
-              </a>
-            </div>
-          </div>
-        </p>
-        <br>
-        <p class="subtitle">
-          <img src="../../icons/nuno.png" alt="" width="80" height="80">
-        </p>
+  <section class="hero is-link">
+    <div class="hero-body">
+      <p class="title">
+        Follow me around the internet ⤵
+      </p>
+      <p class="subtitle">
+      <div class="internet_links">
+        <!-- <div class="icon">
+          <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/nunognogueira/">
+            <img src="../../icons/instagram.svg" alt="" width="30" height="30" />
+          </a>
+        </div> -->
+        <div class="icon">
+          <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/nunoguterres">
+            <img src="../../icons/twitter.svg" alt="" width="30" height="30" />
+          </a>
+        </div>
+        <div class="icon">
+          <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/guterresnogueira/">
+            <img src="../../icons/linkedin.svg" alt="" width="30" height="30" />
+          </a>
+        </div>
+        <div class="icon">
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/nguterresn">
+            <img src="../../icons/github.svg" alt="" width="30" height="30" />
+          </a>
+        </div>
       </div>
-    </section>
-  </body>
+      </p>
+      <!-- <br>
+      <p class="subtitle">
+        <img src="../../icons/nuno.png" alt="" width="80" height="80">
+      </p> -->
+    </div>
+  </section>
+</body>
+
 </html>

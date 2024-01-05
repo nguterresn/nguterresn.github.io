@@ -13,8 +13,8 @@
   
 
   <meta property="twitter:card" content="summary">
-  <meta property="twitter:url" content="https://guterresnogueira.com/content/changing-website-workflow/">
-  <meta property="twitter:title" content="Changing website workflow with Mkdocs">
+  <meta property="twitter:url" content="https://guterresnogueira.com/content/lgvl-simulator-vscode-macos/">
+  <meta property="twitter:title" content="Lgvl simulator vscode macos">
   <meta property="twitter:image" content="../../favicon/android-chrome-192x192.png">
 
   <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
@@ -22,7 +22,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
 
   <title>
-    Changing website workflow with Mkdocs - Nuno Nogueira
+    Lgvl simulator vscode macos - Nuno Nogueira
   </title>
 
   <!-- Bulma CSS framework -->
@@ -52,7 +52,7 @@
   <!-- Disqus Chat -->
   <script>
     var PAGE_URL = 'https://guterresnogueira.com/';
-    var PAGE_IDENTIFIER = '/content/changing-website-workflow/';
+    var PAGE_IDENTIFIER = '/content/lgvl-simulator-vscode-macos/';
 
     var disqus_config = function () {
       this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
@@ -103,26 +103,48 @@
   <section class="section">
     <div class="container is-max-desktop">
       <article class="content">
-        <h1 id="changing-website-workflow-with-mkdocs">Changing website workflow with Mkdocs</h1>
-<h2 id="how-i-was-doing-before">How I was doing before</h2>
-<p>First idea to come to my mind was to ease the process of building <em>code</em>. So <strong>I used Notion as a platform to write whatever I wanted, it helped me create tables, links, images...</strong> It is a very good tool! Then I would export to HTML and add to my website through a template. After that I only had to improve edges and it was good to go.</p>
-<p>I choose this way because it gave me more freedom - I could code whatever I wanted on top of the article. Code JS to do a crazy animation, I could create a button to guide you throughout a demo. At first, seems a pretty good idea, but, in the end, I was not using the freedom I once searched for.</p>
-<p>So, I still had to deal with <em>code</em> like HTML, which made the process a bit slow and would make friction to create <em>something</em>, whatever it could be.</p>
-<h2 id="solution">Solution?</h2>
-<p>After one year of using this process I came accross something named as <a href="https://www.mkdocs.org/">Mkdocs</a>. This got my attention right away! Even thought, I had to lost a bit of freedom along the code, it would make the process so much easier (and I could show you so by writing this while using Mkdocs). It basically <strong>let's you write on markdown and then converts everything into proper <em>code</em></strong>, like HTML, CSS, JS... Just one command and that's it! Easy right? Thought so 😎.</p>
-<h2 id="how-to-do-it">How to do it</h2>
-<p>So, if you interest how can you do this? Well, easy for you because<a href="https://www.mkdocs.org/getting-started/"> Mkdocs has a ton of great documentation</a>!</p>
-<p>My biggest challenge was to create a theme for this website using the mkdocs available tools to do so. I kept it simple, simple colors, default sizes for containers, an easy to read and open-source font (<a href="https://fonts.google.com/specimen/Nunito?preview.text_type=custom">Nunito</a>) and a more serious one (<a href="https://fonts.google.com/specimen/Merriweather">Merriweather</a>). I also used <a href="https://bulma.io/">Bulma CSS framework</a> to facilitate the process (I tend to use bootstrap but felt like giving a chance to Bulma)! If you don't want to create a theme I suggest to use the default ones or to search in the <a href="https://github.com/mkdocs/mkdocs/wiki/MkDocs-Themes">community wiki for other themes</a> (special mention to <a href="https://squidfunk.github.io/mkdocs-material/">Material</a>).</p>
-<p>I droped the left column with the button to download CV and with the QR Code to add me to your contacts. Reasons for this:</p>
-<ul>
-<li>QR code was useless if you were on mobile, which the world is tending to.</li>
-<li>CV is important but I am not trying to sell myself but to share what I like with the world.</li>
-</ul>
-<p>Also got rid of the Discus chat. No one was using it (uh) and it sells people data for profit - I don't like it.</p>
-<h2 id="future-and-archive">Future and archive</h2>
-<p>The old website still exists! <a href="https://archive.guterresnogueira.com">I just created a new endpoint for it</a>, some of the content is just impossible to replicate here, but almost 90% is now on markdown.
-From now on, the website is going to be in this design, which I hope is much comfortable than the other one.</p>
-<h6 id="27092021">27/09/2021</h6>
+        <h2 id="how-to-simulate-lgvl-using-sdl2-on-vscode-macos">How to simulate LGVL using SDL2 on VSCode (MacOS)</h2>
+<h3 id="introduction">Introduction</h3>
+<p>I've started 2024 looking for new technologies to explore and there was one I had in mind to explore a bit, the <a href="https://lvgl.io">LGVL</a> library, a open-source graphics library for embedded systems.</p>
+<p>When I started looking into the documentation about the simulator in VSCode, I noticed there was no clear documentation on how to run the simulator on macOS. After following the <a href="https://github.com/lvgl/lv_port_pc_vscode">first steps</a> and triying to build the code, I end up having no success on the last. The code didn't build.</p>
+<p>In order to find what was missing on my side, I decided to run a simple <a href="https://gist.github.com/haxpor/c9f4870947eacfb5e974d8f5c33e5a03">SDL minimal project</a> and noticed the following line was NOT present in the previous repository Makefile:</p>
+<div class="highlight"><pre><span></span><code><span class="sb">`</span>sdl2-config<span class="w"> </span>--cflags<span class="w"> </span>--libs<span class="sb">`</span>
+</code></pre></div>
+<p>This line will expose the C Flags and the library path, which are necesary for a successful build of the project.</p>
+<div class="highlight"><pre><span></span><code>-I/opt/homebrew/include/SDL2<span class="w"> </span>-D_THREAD_SAFE
+-L/opt/homebrew/lib<span class="w"> </span>-lSDL2
+</code></pre></div>
+<hr />
+<h3 id="steps">Steps</h3>
+<p>a. Install <a href="https://formulae.brew.sh/formula/sdl2"><strong>SDL2</strong></a>:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">foo@bar:~$ </span>brew<span class="w"> </span>install<span class="w"> </span>sdl2
+</code></pre></div>
+<p>b. Find <strong>SDL2</strong> paths:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">foo@bar:~$ </span>brew<span class="w"> </span>ls<span class="w"> </span>SDL2
+</code></pre></div>
+<p>It will print something like this:</p>
+<div class="highlight"><pre><span></span><code>/opt/homebrew/Cellar/sdl2/2.28.5/bin/sdl2-config
+/opt/homebrew/Cellar/sdl2/2.28.5/include/SDL2/<span class="w"> </span><span class="o">(</span><span class="m">78</span><span class="w"> </span>files<span class="o">)</span>
+/opt/homebrew/Cellar/sdl2/2.28.5/lib/libSDL2-2.0.0.dylib
+/opt/homebrew/Cellar/sdl2/2.28.5/lib/cmake/<span class="w"> </span><span class="o">(</span><span class="m">2</span><span class="w"> </span>files<span class="o">)</span>
+/opt/homebrew/Cellar/sdl2/2.28.5/lib/pkgconfig/sdl2.pc
+/opt/homebrew/Cellar/sdl2/2.28.5/lib/<span class="w"> </span><span class="o">(</span><span class="m">4</span><span class="w"> </span>other<span class="w"> </span>files<span class="o">)</span>
+/opt/homebrew/Cellar/sdl2/2.28.5/share/aclocal/sdl2.m4
+</code></pre></div>
+<p>c. Add the include SDL2 path to the Makefile:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">INC</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>-I./ui/simulator/inc/<span class="w"> </span>-I./<span class="w"> </span>-I./lvgl/<span class="w"> </span>-I/opt/homebrew/Cellar/sdl2/2.28.5/include/SDL2
+</code></pre></div>
+<p>d. Include the SDL2 library and respective C flags, by adding <code>sdl2-config --cflags --libs</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">$(BIN)</span><span class="o">:</span><span class="w"> </span><span class="k">$(</span><span class="nv">OBJECTS</span><span class="k">)</span>
+<span class="w">  </span>@mkdir<span class="w"> </span>-p<span class="w"> </span><span class="k">$(</span>BIN_DIR<span class="k">)</span>
+<span class="w">  </span><span class="k">$(</span>CC<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span><span class="k">$(</span>BIN<span class="k">)</span><span class="w"> </span><span class="k">$(</span>OBJECTS<span class="k">)</span><span class="w"> </span><span class="k">$(</span>LDFLAGS<span class="k">)</span><span class="w"> </span><span class="si">${</span><span class="nv">LDLIBS</span><span class="si">}</span><span class="w"> </span><span class="sb">`</span>sdl2-config<span class="w"> </span>--cflags<span class="w"> </span>--libs<span class="sb">`</span>
+</code></pre></div>
+<p>e. Change the <code>main.c</code> include <code>#include &lt;SDL2/SDL.h&gt;</code> to <code>#include &lt;SDL.h&gt;</code>.</p>
+<p>f. Run <code>make</code> 🤝</p>
+<hr />
+<h4 id="other">Other</h4>
+<p>I've created a <a href="https://github.com/lvgl/lv_port_pc_vscode/pull/32">PR</a> to merge this info to the main branch.</p>
+<p>There is also another <a href="https://github.com/lvgl/lv_port_pc_vscode/pull/14">PR</a> which adds support for CMake on MacOS.</p>
       </article>
       
       <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="nunoguterres"

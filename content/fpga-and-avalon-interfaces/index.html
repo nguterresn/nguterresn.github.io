@@ -1,103 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1"
-    />
-    
-      <meta name="description" content="A place where I write about what I'm doing during the weekend." />
-    
-    
-      <meta name="author" content="Nuno Nogueira" />
-    
 
-    <meta property="twitter:card" content="summary">
-    <meta property="twitter:url" content="https://guterresnogueira.com/content/fpga-and-avalon-interfaces/">
-    <meta property="twitter:title" content="FPGA and Avalon Interfaces">
-    <meta property="twitter:image" content="../../favicon/android-chrome-192x192.png">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <meta name="description" content="A place where I write about what I'm doing during the weekend." />
+  
+  
+  <meta name="author" content="Nuno Nogueira" />
+  
 
-    <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:url" content="https://guterresnogueira.com/content/fpga-and-avalon-interfaces/">
+  <meta property="twitter:title" content="FPGA and Avalon Interfaces">
+  <meta property="twitter:image" content="../../favicon/android-chrome-192x192.png">
 
-    <title>
-      FPGA and Avalon Interfaces - Nuno Nogueira
-    </title>
+  <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
 
-    <!-- Bulma CSS framework -->
-    <!-- <link href="../../bulma.min.css" rel="stylesheet" /> -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <title>
+    FPGA and Avalon Interfaces - Nuno Nogueira
+  </title>
 
-    <!-- Custom styles for this template -->
-    <link href="../../style.css" rel="stylesheet" />
-    <link href="../../code_theme.css" rel="stylesheet" />
+  <!-- Bulma CSS framework -->
+  <!-- <link href="../../bulma.min.css" rel="stylesheet" /> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 
-    <!-- Script to support LaTex -->
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
-    <!-- Import custom script -->
-    <!-- Custom code, enable support for inline LaTex equations -->
-    <script type="text/javascript" src="../../script.js" defer></script>
+  <!-- Custom styles for this template -->
+  <link href="../../style.css" rel="stylesheet" />
+  <link href="../../code_theme.css" rel="stylesheet" />
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-G15FQ3N6VZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <!-- Script to support LaTex -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+  <!-- Import custom script -->
+  <!-- Custom code, enable support for inline LaTex equations -->
+  <script type="text/javascript" src="../../script.js" defer></script>
 
-      gtag('config', 'G-G15FQ3N6VZ');
-    </script>
-  </head>
-  <body>
-    <header>
-      <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="container is-max-desktop">
-          <div class="navbar-brand">
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G15FQ3N6VZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-G15FQ3N6VZ');
+  </script>
+
+  <!-- Disqus Chat -->
+  <script>
+    var PAGE_URL = 'https://guterresnogueira.com/';
+    var PAGE_IDENTIFIER = '/content/fpga-and-avalon-interfaces/';
+
+    var disqus_config = function () {
+      this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://nguterresn.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="container is-max-desktop">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="../..">
+            Nuno Guterres Nogueira
+          </a>
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar_menu">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+
+        <div class="navbar-menu" id="navbar_menu">
+          <div class="navbar-end">
+             
             <a class="navbar-item" href="../..">
-              Nuno Guterres Nogueira
+              Home
             </a>
-            <a
-              role="button"
-              class="navbar-burger"
-              aria-label="menu"
-              aria-expanded="false"
-              data-target="navbar_menu"
-            >
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
+            
+            <a class="navbar-item" href="https://m.me/nunoguterresn">
+              Contact me
             </a>
-          </div>
-
-          <div class="navbar-menu" id="navbar_menu">
-            <div class="navbar-end">
-               
-              <a
-                class="navbar-item"
-                href="../.."
-              >
-                Home
-              </a>
-              
-              <a
-                class="navbar-item"
-                href="https://m.me/nunoguterresn"
-              >
-                Contact me
-              </a>
-               
-            </div>
+             
           </div>
         </div>
-      </nav>
-    </header>
+      </div>
+    </nav>
+  </header>
 
-    <section class="section">
-      <div class="container is-max-desktop">
-        <article class="content"><h1 id="fpga-and-avalon-interfaces">FPGA and Avalon Interfaces</h1>
+  <section class="section">
+    <div class="container is-max-desktop">
+      <article class="content">
+        <h1 id="fpga-and-avalon-interfaces">FPGA and Avalon Interfaces</h1>
 <p>As I said in a previous post, I have been working with the Cyclone GX Starter kit FPGA, which has come up a really nice surprise as a <em>way</em> of development. I mean way of development because it is very different compared to the normal way of development of embedded software I'm used to.</p>
 <p>Every manufacturer has its own IP (Intellectual Property) and, therefore, its own interface between them. Intel calls the interface <strong><a href="https://www.intel.com/content/dam/www/programmable/us/en/pdfs/literature/manual/mnl_avalon_spec.pdf">Avalon</a></strong> which is responsible to connect the components in the Intel FPGA. </p>
 <p>Avalon interface can be divided into seven types:</p>
@@ -139,85 +145,54 @@ to other components.</li>
 <p>This quote confirms what I wrote above, but in a more simple and abstract way 😃</p>
 <p>Although <em>address</em> is very important between MM Interfaces, is not required. <em>Signal roles</em> like <em>readdata</em>, <em>write</em> and <em>writedata</em> are required. Based on the minimum requirements, <em>readdata</em> is required for a read-only interface or <em>write</em> and <em>writedata</em> for a write-only interface.</p>
 <p><img alt="FPGA%20and%20Avalon%20Interfaces%2053c19b95143945fcbbc2b54d891f6cfd/Untitled%203.png" src="../img/Untitled%203.png" /></p>
-<p>In the image above it is possible to visualize how masters and slaves work with their <em>signal roles</em>.</p></article>
-        
-          <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="nunoguterres" data-show-count="false">Tweet</a>
-          <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p>In the image above it is possible to visualize how masters and slaves work with their <em>signal roles</em>.</p>
+      </article>
+      
+      <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-via="nunoguterres"
+        data-show-count="false">Tweet</a>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-        
-      </div>
-    </section>
+      
+      <br>
+      <div id="disqus_thread"></div>
+    </div>
+  </section>
 
-    <section class="hero is-link">
-      <div class="hero-body">
-        <p class="title">
-          Follow me around the internet ⤵
-        </p>
-        <p class="subtitle">
-          <div class="internet_links">
-            <div class="icon">
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://www.instagram.com/nunognogueira/"
-              >
-                <img
-                  src="../../icons/instagram.svg"
-                  alt=""
-                  width="30"
-                  height="30"
-                />
-              </a>
-            </div>
-            <div class="icon">
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://twitter.com/nunoguterres"
-              >
-                <img
-                  src="../../icons/twitter.svg"
-                  alt=""
-                  width="30"
-                  height="30"
-                />
-              </a>
-            </div>
-            <div class="icon">
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://www.linkedin.com/in/guterresnogueira/"
-              >
-                <img
-                  src="../../icons/linkedin.svg"
-                  alt=""
-                  width="30"
-                  height="30"
-                />
-              </a>
-            </div>
-            <div class="icon">
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://github.com/nguterresn"
-              >
-                <img
-                  src="../../icons/github.svg"
-                  alt=""
-                  width="30"
-                  height="30"
-                />
-              </a>
-            </div>
-          </div>
-        </p>
-        <br>
-        <p class="subtitle">
-          <img src="../../icons/nuno.png" alt="" width="80" height="80">
-        </p>
+  <section class="hero is-link">
+    <div class="hero-body">
+      <p class="title">
+        Follow me around the internet ⤵
+      </p>
+      <p class="subtitle">
+      <div class="internet_links">
+        <!-- <div class="icon">
+          <a target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/nunognogueira/">
+            <img src="../../icons/instagram.svg" alt="" width="30" height="30" />
+          </a>
+        </div> -->
+        <div class="icon">
+          <a target="_blank" rel="noopener noreferrer" href="https://twitter.com/nunoguterres">
+            <img src="../../icons/twitter.svg" alt="" width="30" height="30" />
+          </a>
+        </div>
+        <div class="icon">
+          <a target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/guterresnogueira/">
+            <img src="../../icons/linkedin.svg" alt="" width="30" height="30" />
+          </a>
+        </div>
+        <div class="icon">
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/nguterresn">
+            <img src="../../icons/github.svg" alt="" width="30" height="30" />
+          </a>
+        </div>
       </div>
-    </section>
-  </body>
+      </p>
+      <!-- <br>
+      <p class="subtitle">
+        <img src="../../icons/nuno.png" alt="" width="80" height="80">
+      </p> -->
+    </div>
+  </section>
+</body>
+
 </html>

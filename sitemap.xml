@@ -2,122 +2,127 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://guterresnogueira.com/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/aboutme/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/arduino-spi-slave/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/boost-converter/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/building-singlecopter/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/changing-website-workflow/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/data-line-protection/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/discourses-and-selected-writings/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/diy-geocache-gps/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/documentation-python-script/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/end-of-line-board/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/fpga-and-avalon-interfaces/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/fpga-python-script/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/how-datasheets-can-be-misleading/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://guterresnogueira.com/content/lgvl-simulator-vscode-macos/</loc>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/matrix-led-lol/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/motor-mosfet-research/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/psu-ka3005p-due/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/sensor-monitoring-fpga-adc-ltc2308-eclipse/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/sensor-monitoring-fpga-adc-ltc2308/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/smoke-extractor/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/starting-on-fpga/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/version-control-script/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/year-2021-recap/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://guterresnogueira.com/content/cmake/cmake/</loc>
-         <lastmod>2023-11-15</lastmod>
+         <lastmod>2024-01-05</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
