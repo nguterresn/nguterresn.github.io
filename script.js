@@ -38,9 +38,6 @@ function resizeImages() {
     var image = images.item(index);
     var width = image.width;
     var height = image.height;
-    console.log("Width: " + width)
-    console.log("height: " + height)
-    console.log("Ratio: " + (width / height))
     const ratio = width / height;
     if (ratio != null && width != '30' && height != '30') {
       if (ratio < 2.5 && ratio >= 2.25) {
